@@ -1,0 +1,18 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  padding: 20px;
+  height: 100px;
+}
+
+.text-input:focus {
+  outline: none;
+}
+
+#login-form {
+  margin: auto;
+}
+

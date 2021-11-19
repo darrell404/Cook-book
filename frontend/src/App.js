@@ -1,12 +1,16 @@
 import './App.css';
 import './css/main.css'
-import Login from './components/login';
+import Main from './components/Main'
+import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 
 function App() {
   return (
-    <div className="App w-100 h-100">
-      <Login />
-    </div>
+    <Router>
+       <Main />
+       <Routes>
+         <Route path='/' exact component={Main} />
+       </Routes>
+    </Router>
   );
 }
 

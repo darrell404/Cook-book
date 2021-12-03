@@ -6,9 +6,8 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 function App() {
   return (
     <Router>
-       <Main />
        <Routes>
-         <Route path='/' exact component={Main} />
+         <Route path='/' exact element={<Main />} />
        </Routes>
     </Router>
   );

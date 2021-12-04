@@ -12,8 +12,9 @@ function Main() {
   var [loggedIn, setLoggedIn] = useState(false)
   var [searchRecipe, setSearchRecipe] = useState([]);
   var [showFood, setShowFood] = useState([])
+  var [offset, setOffset] = useState()
 
-  const fetchRecipes = async () => await axios(`/recipes/${searchRecipe}`).then(response => setShowFood(response.data.results))
+  const fetchRecipes = async () => await axios(`/recipes/search/${searchRecipe}`).then(response => setShowFood(response.data.results))
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -46,7 +47,7 @@ function Main() {
 function SearchRecipeContainer(props) {
   return(
     <div className="recipeContainer w-75 bg-secondary d-flex flex-wrap mt-5 mx-auto justify-content-around">
-      {props.showFood.map(food => <RecipeBox foodInfo={food}/>)}
+      {props.showFood.map(food => <RecipeBox key={food.id} foodInfo={food}/>)}
     </div>
   )
 }
@@ -55,7 +56,7 @@ function RecipeBox(props) {
   return(
     <div className="m-1">
       <div className="m-1 p-1 align-items-center">
-        <img src={props.foodInfo.image} max-width={"300px"} max-height={"200px"}/>
+        <img src={props.foodInfo.image} width={"300px"} height={"200px"}/>
       </div>
     </div>
   )

@@ -14,14 +14,25 @@ router.route('/').get((req,res) => {
     res.send("This is the Recipes endpoint")
 })
 
-router.route('/:recipename').get((req,res) => {
-    // console.log(URL)
-    // const getQuery = `${URL}` + `/complexsearch?query=${req.params.recipename}` + `&apiKey=${APIKEY}`
-    // console.log(getQuery)
-    const fetchRecipe = () => axios(`${URL}` + `/complexSearch?query=${req.params.recipename}` + `&apiKey=${APIKEY}`).then(response => res.send(response.data))
-    // const fetchRecipe = () => axios('https://dog.ceo/api/breeds/list/all').then(response => res.json(response.data))
-    fetchRecipe()
+router.route('/search/:recipename').get((req,res) => {
+    const fetchRecipes = () => axios(`${URL}/complexSearch?query=${req.params.recipename}&apiKey=${APIKEY}`).then(response => res.send(response.data))
+    try {
+        fetchRecipes()
+    }
+    catch(e) {
+        console.error(e)
+    }
     console.log(req.params.recipename)
+})
+
+router.route('/info/:recipeID').get((req,res) => {
+    const fetchRecipeFromID = () => axios(`${URL}/${req.params.recipeID}/information?apiKey=${APIKEY}`).then(response => res.send(response.data))
+    try {
+        fetchRecipeFromID()
+    }
+    catch(e) {
+        console.error(e)
+    }
 })
 
 

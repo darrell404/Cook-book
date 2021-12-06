@@ -1,17 +1,17 @@
 import '../css/main.css'
 import '../css/addon.css'
-import { useState, useRef, forwardRef } from 'react';
-import Login from './Login';
+import { useState, useRef, forwardRef } from 'react'
+import Login from './Login'
 import Register from './Register'
-import {useLocation, Link} from 'react-router-dom';
+import {useLocation, Link} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
  
-function Main() {
+export function Main() {
   const location = useLocation();
   var [loading, setLoading] = useState(true)
   var [loggedIn, setLoggedIn] = useState(false)
-  var [searchRecipe, setSearchRecipe] = useState('');
+  var [searchRecipe, setSearchRecipe] = useState('')
   var [showFood, setShowFood] = useState({})
   var [offset, setOffset] = useState()
 
@@ -35,14 +35,16 @@ function Main() {
   }
 
   return (
-    <div className="Container w-100 h-100">
+    <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-      <nav className="w-100 border-bottom shadow-sm">
+      <div className="nav w-100 border-bottom shadow-sm position-fixed fixed-top bg-white">
         <div className="navbar-container w-75 d-flex m-auto mt-3 mb-2">
-          <div className="logo-container w-25 d-flex m-0">
-              <img className="" src='/pot.png' alt='' width="50px" height="50px"/>
-              <h3 className="p-2">Recipe Lookup</h3>
-          </div>
+            <div className="logo-container w-25 d-flex m-0">
+              <Link className="homepage-logo d-flex w-100 text-decoration-none" to={'/'}>
+                <img src='/pot.png' alt='' width="50px" height="50px"/>
+                <h3 className="p-2">Recipe Lookup</h3>
+              </Link>
+            </div>
           <div className="search-container w-50">
               <form onSubmit={handleSubmit} className="w-75 justify-content-center form-control d-flex m-auto border-0">
                 <input onChange={handleChange} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-75 justify-content-center rounded-0"></input>
@@ -50,12 +52,25 @@ function Main() {
               </form>
           </div>
         </div>
-      </nav>
-      <div className="body-container m-auto border-0">
       </div>
-      <SearchRecipeContainer showFood={showFood} searchRecipe={searchRecipe} ref={searchedRecipeRef}/>
+          <SearchRecipeContainer showFood={showFood} searchRecipe={searchRecipe} ref={searchedRecipeRef}/>
     </div>
   );
+}
+
+export function Navigation() {
+  return (
+  <div className="nav w-100 border-bottom shadow-sm">
+    <div className="navbar-container w-75 d-flex m-auto mt-3 mb-2">
+      <div className="logo-container w-25 d-flex m-0">
+      <Link className="homepage-logo d-flex w-100 text-decoration-none" to={'/'}>
+          <img className="" src='/pot.png' alt='' width="50px" height="50px"/>
+          <h3 className="p-2">Recipe Lookup</h3>
+      </Link>
+      </div>
+    </div>
+  </div>
+  )
 }
 
 const SearchRecipeContainer = forwardRef((props, ref) => {
@@ -78,14 +93,14 @@ function RecipeBox(props) {
         </Card.Title>
       </Link>
       <Card.Text>
-        <p className="text-center">Add to Favourites</p>
+        <span className="text-center">Add to Favourites</span>
       </Card.Text>
     </Card>
-)
+  )
 }
 
 
-export function LoadingPage() {
+function LoadingPage() {
   return (
     <div>
       <div>Loading page...</div>
@@ -93,5 +108,3 @@ export function LoadingPage() {
   </div>
   )
 }
-
-export default Main;

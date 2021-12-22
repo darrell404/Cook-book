@@ -1,5 +1,6 @@
 import '../css/main.css'
 import '../css/addon.css'
+import setFavourite from '../Assets/Set-Favourite.svg'
 import { useState, useRef, forwardRef } from 'react'
 import Login from './Login'
 import Register from './Register'
@@ -7,67 +8,70 @@ import {useLocation, Link} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
  
-export function Main() {
+const cuisines = ["All","African","American","British","Cajun","Caribbean","Chinese","Eastern European","European","French","German","Greek","Indian","Irish","Italian","Japanese","Jewish","Korean","Latin American","Mediterranean","Mexican","Middle Eastern","Nordic","Southern","Spanish","Thai","Vietnamese"]
+const mealTypes = ["All","Main course","Side dish","Dessert","Appetizer","Salad","Bread","Breakfast","Soup","Beverage","Sauce","Marinade","Fingerfood","Snack","Drink"]
+const sort = ["Ascending","Descending"]
+
+const filterObject = {
+  "Cuisine": cuisines,
+  "MealType": mealTypes,
+  "Sort": sort
+}
+
+export function Main(props) {
   const location = useLocation();
   var [loading, setLoading] = useState(true)
   var [loggedIn, setLoggedIn] = useState(false)
-  var [searchRecipe, setSearchRecipe] = useState('')
-  var [showFood, setShowFood] = useState({})
   var [offset, setOffset] = useState()
 
   var searchedRecipeRef = useRef('')
 
 
-  const fetchRecipes = async () => await axios(`/recipes/search/${searchRecipe}`).then(response => setShowFood(response.data))
+  const fetchRecipes = async () => await axios(`/recipes/search/${props.searchRecipe}`).then(response => storeShowFood(response.data))
 
-  const handleSubmit = (event) => {
+  const submit = (event) => {
     event.preventDefault();
-    if (searchRecipe === '' | searchRecipe === undefined) { 
+    if (props.searchRecipe === '' | props.searchRecipe === undefined) { 
         searchedRecipeRef.current = '';
         return
       }
     fetchRecipes()
-    searchedRecipeRef.current = searchRecipe
+    searchedRecipeRef.current = props.searchRecipe
   }
 
-  const handleChange = (event) => {
-    setSearchRecipe(event.target.value)
+  const change = (event) => {
+    props.handleChange(event.target.value)
+  }
+
+  const storeShowFood = (data) => {
+    props.updateShowFood(data)
   }
 
   return (
     <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-      <div className="nav w-100 border-bottom shadow-sm position-fixed fixed-top bg-white">
-        <div className="navbar-container w-75 d-flex m-auto mt-3 mb-2">
-            <div className="logo-container w-25 d-flex m-0">
-              <Link className="homepage-logo d-flex w-100 text-decoration-none" to={'/'}>
-                <img src='/pot.png' alt='' width="50px" height="50px"/>
-                <h3 className="p-2">Recipe Lookup</h3>
-              </Link>
-            </div>
-          <div className="search-container w-50">
-              <form onSubmit={handleSubmit} className="w-75 justify-content-center form-control d-flex m-auto border-0">
-                <input onChange={handleChange} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-75 justify-content-center rounded-0"></input>
-                <button type="submit" className="search"><i className="fa fa-search"></i></button>
-              </form>
-          </div>
+      <Navigation />
+        <div className="search-container mt-4 position-fixed">
+            <form onSubmit={submit} className="w-100 form-control d-flex border-0">
+            <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-75 rounded-0"></input>
+            <button type="submit" className="search"><i className="fa fa-search"></i></button>
+            </form>
         </div>
-      </div>
-          <SearchRecipeContainer showFood={showFood} searchRecipe={searchRecipe} ref={searchedRecipeRef}/>
+      <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} ref={searchedRecipeRef}/>
     </div>
   );
 }
 
 export function Navigation() {
   return (
-  <div className="nav w-100 border-bottom shadow-sm">
-    <div className="navbar-container w-75 d-flex m-auto mt-3 mb-2">
-      <div className="logo-container w-25 d-flex m-0">
-      <Link className="homepage-logo d-flex w-100 text-decoration-none" to={'/'}>
-          <img className="" src='/pot.png' alt='' width="50px" height="50px"/>
-          <h3 className="p-2">Recipe Lookup</h3>
-      </Link>
-      </div>
+  <div className="nav navbar border-bottom w-100 shadow-sm position-fixed bg-white">
+    <div className="navbar-container w-100 d-flex mt-3 mb-2 px-3">
+        <Link className='navbar-brand' to={'/'}>
+          <img src='/pot.png' alt='' width="50px" height="50px"/>
+        </Link>
+        <Link className='nav-link' to={'/'}>
+          <h3 className="logo-title p-2">Cook Book</h3>
+        </Link>
     </div>
   </div>
   )
@@ -76,26 +80,61 @@ export function Navigation() {
 const SearchRecipeContainer = forwardRef((props, ref) => {
   var fetchedFood = props.showFood.results
   return(
-    <div className="container recipeContainer w-75 row mt-5 mx-auto justify-content-center">
-      {ref.current !== '' && <div className="w-100 text-left mt-3 mb-3"><h3>Showing results for {ref.current}...</h3></div>}
-      {fetchedFood && fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food}/>)}
+    <div className="mx-auto recipe-list-container justify-content-center">
+      {ref.current !== '' && <div className="w-75 m-auto pl-5"><h5 className="showresult">Showing results for {ref.current}...</h5></div>}
+      <div className="mx-auto justify-content-center align-items-center w-75">
+        {fetchedFood && fetchedFood.length !== 0 && <Filter food={fetchedFood}/>}
+        <div className="container justify-content-center">
+          <div className="d-flex flex flex-wrap mx-auto justify-content-center">
+          {fetchedFood && fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food}/>)}
+          </div>
+        </div>
+      </div>
     </div>
   )
 })
 
+function Filter() {
+    let renderDataFilter = []
+    for(const value in filterObject) {
+      renderDataFilter.push(
+        <div key={value} className="d-flex flex-column mx-2">
+          <label>{value}</label>
+            <select className="mt-2 selectpicker" id={value} name={value}>
+              {filterObject[value].map((object, index) => <option key={index}>{object}</option>)}
+            </select>
+        </div>
+      )
+    }
+
+    return (
+    <div className="filter-container p-3">
+      Filter by:
+      <div className="filter-box d-flex flex-row flex-wrap w-100 mt-4">
+        <div className="d-flex flex-wrap justify-content-between w-100">
+          <div className="d-flex flex-wrap">
+            {renderDataFilter}
+          </div>
+          <button className="btn button-search btn-sm p-1 mt-4 mx-2" type="submit">Update</button>
+        </div>
+      </div>
+    </div>
+  )
+} 
+
 function RecipeBox(props) {
   return(
-    <Card className="mt-3" style={{ width: "300px", height: "350px"}}>
-      <Link to={`/recipe/${props.foodInfo.id}`} state={{from: 'Main'}}>
-        <Card.Img className="card-image-top" src={props.foodInfo.image} width={"300px"} height={"250px"} />
-        <Card.Title>
-          <h5 className="text-center">{props.foodInfo.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
-        </Card.Title>
-      </Link>
-      <Card.Text>
-        <span className="text-center">Add to Favourites</span>
-      </Card.Text>
-    </Card>
+      <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "330px"}}>
+        <Link to={`/recipe/${props.foodInfo.id}`} className="recipe-link" state={{from: 'Main'}}>
+          <Card.Img className="recipe-image card-image-top mx-auto d-block" src={props.foodInfo.image}/>
+          <Card.Title>
+            <h5 className="text-center">{props.foodInfo.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
+          </Card.Title>
+        </Link>
+        <Card.Text>
+          <span className="d-flex justify-content-center"><img className="m-4" src={setFavourite} alt="Favourite" /></span>
+        </Card.Text>
+      </Card>
   )
 }
 

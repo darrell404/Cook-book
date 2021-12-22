@@ -1,55 +1,123 @@
-* {
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  min-height: 100vh;
+  body {
+  /* min-height: 100vh; */
   padding: 0;
   margin: 0;
-}
+  }
 
 .loader {
-    border: 16px solid #f3f3f3; 
-    border-top: 16px solid #3498db; 
-    border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 0.8s linear infinite;
+  border: 16px solid #f3f3f3; 
+  border-top: 16px solid #3498db; 
+  border-radius: 50%;
+  width: 120px;
+  height: 120px;
+  animation: spin 0.8s linear infinite;
+}
+
+.logo-container {
+  margin-left: 5%;
+}
+
+.homepage-logo  {
+  color: rgba(41, 37, 37, 0.836);
+}
+
+.homepage-logo:hover {
+  color: rgba(41, 37, 37, 0.836);
+}
+
+.nav {
+  z-index: 50;
+}
+
+.nav-link, .nav-link:visited, .nav-link:active, .recipe-link, .recipe-link:visited, .recipe-link:active {
+  color: rgb(141, 134, 134);
+}
+
+.nav-link:hover, .recipe-link:hover {
+  color: rgb(82, 78, 78);
+}
+
+
+.search-container {
+  z-index: 5000;
+  left: 45%;
+  top: 0%;
+  margin-left: -10%;
+  width: 50%;
+}
+
+.search {
+  width: 50px;
+  background: #61a6e6e7;
+  color: white;
+  border: none;
+}
+
+.button-search {
+  background: #61a6e6e7;
+  width: 25%;
+}
+
+.search:hover {
+  background: #3f85c7e7;
+}
+
+.filter-container {
+  background-color: #ebebeb;
+}
+
+.form-control:focus {
+  box-shadow: none;
+}
+
+.recipe-list-container {
+  padding: 130px 0 0;
+}
+
+.recipe-image {
+  width: 230px;
+  height: 200px;
+}
+
+.recipe-container {
+  padding: 130px 0 0;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 750px) {
+  .logo-title {
+    display: none;
   }
 
-  .homepage-logo  {
-    color: rgba(41, 37, 37, 0.836);
+  .logo-container {
+    width: 25%;
   }
 
-  .homepage-logo:hover {
-    color: rgba(41, 37, 37, 0.836);
+  .search-container {
+    width: 75%;
+    margin-left: 0;
+    left:25%;
+  }
+}
+
+@media screen and (max-width: 400px) { 
+  .recipe-image {
+    height: auto; 
+    width: 100%;
   }
 
-  .nav {
-    z-index: 50;
+  .search-container {
+    width: 75%;
+    margin-left: 0;
+    left:25%;
   }
 
-  .search {
-    width: 50px;
-    background: #61a6e6e7;
-    color: white;
-    border: none;
+  .button-search {
+    width: 50%;
   }
+}
 
-  .search:hover {
-    background: #3f85c7e7;
-  }
-
-  .form-control:focus {
-    box-shadow: none;
-  }
-
-  .container {
-    padding-top: 120px;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }

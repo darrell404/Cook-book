@@ -39,10 +39,10 @@ function RecipePage(props) {
             <Navigation />
             <div className="recipe-container">
                 <div className='container w-80'>
-                    <h2 className="my-5 text-center">{recipeData.title}</h2>
+                    <h2 className="my-5 text-center"><b className="border-bottom border-warning border-3">{recipeData.title.toUpperCase()}</b></h2>
                     <p className="text-center"><b className="text-warning">Servings:</b> {recipeData.servings} <b className="text-warning">Cooking Time:</b> {recipeData.readyInMinutes} minutes</p>
                     <Row className="mb-5">
-                        <Image className='w-50 m-auto rounded-sm p-0 border border-secondary' src={recipeData.image} fluid/>
+                        <Image className='w-50 m-auto rounded-sm p-0' src={recipeData.image} fluid/>
                     </Row>
                     <p className='w-50 m-auto text-center pb-5' dangerouslySetInnerHTML={addSummary()}/>
                     <div className="tab-container p-3 border border-warning border-3">

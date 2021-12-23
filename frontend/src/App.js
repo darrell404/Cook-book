@@ -4,6 +4,7 @@ import  { Main } from './components/Main'
 import RecipePage from './components/RecipePage';
 import { useState } from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
+import Login from './components/Login';
 
 
 function App() {
@@ -24,6 +25,7 @@ function App() {
        <Routes>
          <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood}/>} />
          <Route path='/recipe/:id' element={<RecipePage/>} />
+         <Route path='/login' element={<Login/>} />
        </Routes>
     </Router>
   );

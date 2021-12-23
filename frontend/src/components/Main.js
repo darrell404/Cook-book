@@ -52,9 +52,9 @@ export function Main(props) {
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
       <Navigation />
         <div className="search-container mt-4 position-fixed">
-            <form onSubmit={submit} className="w-100 form-control d-flex border-0">
+            <form onSubmit={submit} className="w-100 bg-dark form-control d-flex border-0">
             <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-75 rounded-0"></input>
-            <button type="submit" className="search"><i className="fa fa-search"></i></button>
+            <button type="submit" className="search bg-warning"><i className="fa fa-search"></i></button>
             </form>
         </div>
       <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} ref={searchedRecipeRef}/>
@@ -64,13 +64,13 @@ export function Main(props) {
 
 export function Navigation() {
   return (
-  <div className="nav navbar border-bottom w-100 shadow-sm position-fixed bg-white">
+  <div className="nav navbar navbar-dark bg-dark border-bottom w-100 shadow-sm position-fixed">
     <div className="navbar-container w-100 d-flex mt-3 mb-2 px-3">
         <Link className='navbar-brand' to={'/'}>
           <img src='/pot.png' alt='' width="50px" height="50px"/>
         </Link>
         <Link className='nav-link' to={'/'}>
-          <h3 className="logo-title p-2">Cook Book</h3>
+          <h3 className="logo-title text-warning p-2">Cook Book</h3>
         </Link>
     </div>
   </div>
@@ -108,14 +108,14 @@ function Filter() {
     }
 
     return (
-    <div className="filter-container p-3">
-      Filter by:
+    <div className="filter-container text-light bg-dark p-3">
+      <h5>Filter by:</h5>
       <div className="filter-box d-flex flex-row flex-wrap w-100 mt-4">
         <div className="d-flex flex-wrap justify-content-between w-100">
           <div className="d-flex flex-wrap">
             {renderDataFilter}
           </div>
-          <button className="btn button-search btn-sm p-1 mt-4 mx-2" type="submit">Update</button>
+          <button className="btn button-search btn-sm bg-warning p-1 mt-4 mx-2" type="submit">Update</button>
         </div>
       </div>
     </div>
@@ -128,7 +128,7 @@ function RecipeBox(props) {
         <Link to={`/recipe/${props.foodInfo.id}`} className="recipe-link" state={{from: 'Main'}}>
           <Card.Img className="recipe-image card-image-top mx-auto d-block" src={props.foodInfo.image}/>
           <Card.Title>
-            <h5 className="text-center">{props.foodInfo.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
+            <h5 className="recipe-title text-center">{props.foodInfo.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
           </Card.Title>
         </Link>
         <Card.Text>

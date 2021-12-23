@@ -40,27 +40,33 @@ function RecipePage(props) {
             <div className="recipe-container">
                 <div className='container w-80'>
                     <h2 className="my-5 text-center">{recipeData.title}</h2>
-                    <p className="text-center"><b>Servings:</b> {recipeData.servings} <b>Cooking Time:</b> {recipeData.readyInMinutes} minutes</p>
+                    <p className="text-center"><b className="text-warning">Servings:</b> {recipeData.servings} <b className="text-warning">Cooking Time:</b> {recipeData.readyInMinutes} minutes</p>
                     <Row className="mb-5">
                         <Image className='w-50 m-auto rounded-sm p-0 border border-secondary' src={recipeData.image} fluid/>
                     </Row>
-                    <p className='w-50 m-auto text-center' dangerouslySetInnerHTML={addSummary()}/>
-                    <Tabs defaultActiveKey="ingredients" id="controlled-tab-example">
-                        <Tab className="tab" eventKey="ingredients" title="Ingredients">
-                            <div className='pl-5 mt-3'>
-                            <span>Units</span>
-                            <ToggleButtonGroup name="units" type="radio" defaultValue={metric} onChange={changeMetric}>
-                                <ToggleButton id="us" value={"us"}>US</ToggleButton>
-                                <ToggleButton id="metric" value={"metric"}>METRIC</ToggleButton>
-                            </ToggleButtonGroup>
-                            <p className='pl-5 mt-3'>The ingredients for this recipe are as follows:</p>
-                            <Ingredients recipeData={recipeData} metric={metric}/>
-                            </div>
-                        </Tab>
-                        <Tab eventKey="recipe" title="Recipe">
-                            <div className='pl-5 mt-4' dangerouslySetInnerHTML={addInstructions()} />
-                        </Tab>
-                    </Tabs>
+                    <p className='w-50 m-auto text-center pb-5' dangerouslySetInnerHTML={addSummary()}/>
+                    <div className="tab-container p-3 border border-warning border-3">
+                        <Tabs defaultActiveKey="ingredients" id="controlled-tab-example">
+                            <Tab className="tab" eventKey="ingredients" title="Ingredients">
+                                <div className='pl-5 mt-3'>
+                                <p>Units</p>
+                                <ToggleButtonGroup name="units" type="radio" defaultValue={metric} onChange={changeMetric}>
+                                    <ToggleButton variant="warning" className="text-dark" id="us" value={"us"}><b>US</b></ToggleButton>
+                                    <ToggleButton variant="warning" className="text-dark" id="metric" value={"metric"}><strong>METRIC</strong></ToggleButton>
+                                </ToggleButtonGroup>
+                                <p className='pl-5 mt-3'>The ingredients for this recipe are as follows:</p>
+                                <Ingredients recipeData={recipeData} metric={metric}/>
+                                </div>
+                            </Tab>
+                            <Tab eventKey="recipe" title="Recipe">
+                                <div className='pl-5 mt-4'>
+                                    <ol>
+                                    {recipeData.analyzedInstructions[0].steps.map(e => <li>{e.step}</li>)}
+                                    </ol>
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </div>
                 </div>
             </div>
         </div>

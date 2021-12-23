@@ -1,12 +1,11 @@
   body {
-  /* min-height: 100vh; */
   padding: 0;
   margin: 0;
   }
 
 .loader {
   border: 16px solid #f3f3f3; 
-  border-top: 16px solid #3498db; 
+  border-top: 16px solid rgb(255, 193, 7); 
   border-radius: 50%;
   width: 120px;
   height: 120px;
@@ -29,14 +28,14 @@
   z-index: 50;
 }
 
-.nav-link, .nav-link:visited, .nav-link:active, .recipe-link, .recipe-link:visited, .recipe-link:active {
-  color: rgb(141, 134, 134);
+.recipe-link, .recipe-link:visited, .recipe-link:active {
+  color:black;
+  text-decoration: none;
 }
 
-.nav-link:hover, .recipe-link:hover {
-  color: rgb(82, 78, 78);
+.recipe-link:hover {
+  color: #363636;
 }
-
 
 .search-container {
   z-index: 5000;
@@ -54,16 +53,11 @@
 }
 
 .button-search {
-  background: #61a6e6e7;
   width: 25%;
 }
 
 .search:hover {
   background: #3f85c7e7;
-}
-
-.filter-container {
-  background-color: #ebebeb;
 }
 
 .form-control:focus {

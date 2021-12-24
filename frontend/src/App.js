@@ -5,6 +5,7 @@ import RecipePage from './components/RecipePage';
 import { useState } from 'react';
 import {BrowserRouter as Router, Routes, Route} from 'react-router-dom'
 import Login from './components/Login';
+import Register from './components/Register';
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
          <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood}/>} />
          <Route path='/recipe/:id' element={<RecipePage/>} />
          <Route path='/login' element={<Login/>} />
+         <Route path='/register' element={<Register/>}/>
        </Routes>
     </Router>
   );

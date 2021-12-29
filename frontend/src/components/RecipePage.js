@@ -1,6 +1,5 @@
 import '../css/addon.css'
 import { useParams } from 'react-router-dom'
-import { Navigation } from './Main';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ListGroup, Row, Col, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
@@ -36,7 +35,6 @@ function RecipePage(props) {
     if (recipeData !== null)
     return(
         <div>
-            <Navigation />
             <div className="recipe-container">
                 <div className='container w-80'>
                     <h2 className="my-5 text-center"><b className="border-bottom border-warning border-3">{recipeData.title.toUpperCase()}</b></h2>
@@ -74,7 +72,7 @@ function RecipePage(props) {
 
     else return(
         <div>
-            <Navigation />
+            <h1>No data has been found!</h1>
         </div>
     )
 }

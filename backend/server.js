@@ -5,6 +5,8 @@ const app = express();
 const LoginRoute = require('./routes/Login')
 const RegisterRoute = require('./routes/Register')
 const recipeRoute = require('./routes/recipelist')
+const session = require("express-session")
+const cookieParser = require("cookie-parser")
 const dbURL = process.env.DB_URL
 
 // Mongoose Connection
@@ -16,8 +18,13 @@ db.once('open', () => console.log("Connected to Database!"))
 
 // Start of Express config
 
-app.use(cors());
+app.use(cors({
+    origin: ["http://localhost:3000"],
+    methods: ["GET", "POST"],
+    credentials: true
+}));
 app.use(express.json());
+app.use(cookieParser())
 
 app.get('/', (req, res) => {
     res.send("This is the root location!")

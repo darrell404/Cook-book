@@ -4,6 +4,7 @@ import setFavourite from '../Assets/Set-Favourite.svg'
 import { useState, useRef, forwardRef } from 'react'
 import Login from './Login'
 import Register from './Register'
+import Navigation from './Navigation'
 import {useLocation, Link} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
@@ -20,8 +21,6 @@ const filterObject = {
 
 export function Main(props) {
   const location = useLocation();
-  var [loading, setLoading] = useState(true)
-  var [loggedIn, setLoggedIn] = useState(false)
   var [offset, setOffset] = useState()
 
   var searchedRecipeRef = useRef('')
@@ -50,31 +49,15 @@ export function Main(props) {
   return (
     <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-      <Navigation />
-        <div className="search-container mt-4 position-fixed">
-            <form onSubmit={submit} className="w-100 bg-dark form-control d-flex border-0">
-            <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-75 rounded-0"></input>
-            <button type="submit" className="search bg-warning"><i className="fa fa-search"></i></button>
+        <div className="search-container position-fixed d-flex">
+            <form onSubmit={submit} className="w-100 form-control d-flex flex-row justify-content-center border-0">
+            <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-50 rounded-0"></input>
+            <button type="submit" className="search btn-lg bg-warning"><i className="fa fa-search"></i></button>
             </form>
         </div>
       <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} ref={searchedRecipeRef}/>
     </div>
   );
-}
-
-export function Navigation() {
-  return (
-  <div className="nav navbar navbar-dark bg-dark border-bottom w-100 shadow-sm position-fixed">
-    <div className="navbar-container w-100 d-flex mt-3 mb-2 px-3">
-        <Link className='navbar-brand' to={'/'}>
-          <img src='/pot.png' alt='' width="50px" height="50px"/>
-        </Link>
-        <Link className='nav-link' to={'/'}>
-          <h3 className="logo-title text-warning p-2">Cook Book</h3>
-        </Link>
-    </div>
-  </div>
-  )
 }
 
 const SearchRecipeContainer = forwardRef((props, ref) => {

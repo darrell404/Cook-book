@@ -1,4 +1,3 @@
-// import mongoose, { Schema } from 'mongoose'
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require("bcrypt")

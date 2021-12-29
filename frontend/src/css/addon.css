@@ -26,6 +26,7 @@
 
 .nav {
   z-index: 50;
+  height: 10%;
 }
 
 .recipe-link, .recipe-link:visited, .recipe-link:active {
@@ -39,17 +40,8 @@
 
 .search-container {
   z-index: 5000;
-  left: 45%;
-  top: 0%;
-  margin-left: -10%;
-  width: 50%;
-}
-
-.search {
-  width: 50px;
-  background: #61a6e6e7;
-  color: white;
-  border: none;
+  top: 10%;
+  width: 100%;
 }
 
 .button-search {
@@ -65,7 +57,7 @@
 }
 
 .recipe-list-container {
-  padding: 130px 0 0;
+  padding: 200px 0 0;
 }
 
 .recipe-image {
@@ -74,7 +66,7 @@
 }
 
 .recipe-container {
-  padding: 130px 0 0;
+  padding: 200px 0 0;
 }
 
 /* Login.js CSS */
@@ -89,18 +81,16 @@
 }
 
 @media screen and (max-width: 750px) {
-  .logo-title {
-    display: none;
-  }
-
   .logo-container {
     width: 25%;
   }
 
+  .nav {
+    height: 12%;
+  }
+
   .search-container {
-    width: 75%;
-    margin-left: 0;
-    left:25%;
+    top: 15%;
   }
 }
 
@@ -108,12 +98,6 @@
   .recipe-image {
     height: auto; 
     width: 100%;
-  }
-
-  .search-container {
-    width: 75%;
-    margin-left: 0;
-    left:25%;
   }
 
   .button-search {

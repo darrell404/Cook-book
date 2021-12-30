@@ -6,6 +6,7 @@ const LoginRoute = require('./routes/Login')
 const RegisterRoute = require('./routes/Register')
 const recipeRoute = require('./routes/recipelist')
 const session = require("express-session")
+const MongoDBSession = require("connect-mongodb-session")(session)
 const cookieParser = require("cookie-parser")
 const dbURL = process.env.DB_URL
 
@@ -16,6 +17,11 @@ const db = mongoose.connection
 db.on('error', (error) => console.error(error))
 db.once('open', () => console.log("Connected to Database!"))
 
+const store = new MongoDBSession({
+    uri: dbURL,
+    collection: 'sessions'
+})
+
 // Start of Express config
 
 app.use(cors({
@@ -25,8 +31,15 @@ app.use(cors({
 }));
 app.use(express.json());
 app.use(cookieParser())
+app.use(session({
+    secret: "This is my cook book",
+    resave: false,
+    saveUninitialized: false,
+    store: store
+})) 
 
 app.get('/', (req, res) => {
+    req.session.isAuth = true
     res.send("This is the root location!")
 })
 

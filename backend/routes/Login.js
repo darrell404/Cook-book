@@ -3,19 +3,27 @@ const router = express.Router();
 const passport = require("passport")
 const LocalStrategy = require('passport-local')
 const bcrypt = require("bcrypt")
-const User = require('../models/model')
+const User = require('../models/User');
 
 router.route('/').post(async (req, res) => {
+    const {email, password} = req.body
     try {
-    const getUserAccount = await User.findOne({"email": req.body.email})
+    const getUserAccount = await User.findOne({email})
         if (getUserAccount) {
-            const encryptPassword = await bcrypt.compare(req.body.password, getUserAccount.password, (err, result) => {
+            const encryptPassword = await bcrypt.compare(password, getUserAccount.password, (err, result) => {
                 if (err) console.log(err)
-                else if(result == true) {
+                else if(result) {
+                    req.session.isAuth = true
+                    req.session.email = email
+                    req.session.save();
+                    console.log(req.session)
                     console.log(`User account ${req.body.email} has been found!`)
-                    res.send(getUserAccount)
+                    res.send(req.session)
                 }
-                else console.log("Incorrect username or password")
+                else if (!result) {
+                    res.send({"error" : "Incorrect username or password"})
+                    console.log("Incorrect username or password")
+                }
             })
         }
 

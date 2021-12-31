@@ -2,9 +2,6 @@ import '../css/main.css'
 import '../css/addon.css'
 import setFavourite from '../Assets/Set-Favourite.svg'
 import { useState, useRef, forwardRef } from 'react'
-import Login from './Login'
-import Register from './Register'
-import Navigation from './Navigation'
 import {useLocation, Link} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
@@ -49,7 +46,7 @@ export function Main(props) {
   return (
     <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
-        <div className="search-container position-fixed d-flex">
+        <div className="search-container d-flex">
             <form onSubmit={submit} className="w-100 form-control d-flex flex-row justify-content-center border-0">
             <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-50 rounded-0"></input>
             <button type="submit" className="search btn-lg bg-warning"><i className="fa fa-search"></i></button>

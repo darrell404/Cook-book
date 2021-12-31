@@ -40,6 +40,7 @@ app.use(session({
 
 app.get('/', (req, res) => {
     req.session.isAuth = true
+    console.log(req.session)
     res.send("This is the root location!")
 })
 

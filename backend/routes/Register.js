@@ -27,7 +27,8 @@ router.route('/').post(async (req, res) => {
                 res.send({"success": "Account successfully created!"})
             }
             catch(err) {
-                if(err.code === 11000) {res.send({"error": "User account already exists"})}
+                if(err.code === 11000) {
+                    res.send({"error": "User account already exists"})}
                 console.log(err)
             }
         }

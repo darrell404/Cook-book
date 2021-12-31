@@ -35,7 +35,14 @@ function Register() {
             setShowMessage(true)
             setTimeout(() => {
                 navigate('/account/login')
-            }, 2000)
+            }, 1500)
+        }
+        if(sendData.error) {
+            setMessage(sendData)
+            setShowMessage(true)
+            setTimeout(() => {
+                setShowMessage(false)
+            }, 3000)
         }
     }
 
@@ -65,7 +72,8 @@ function Register() {
                 message.error ?
                     <Alert className="alert-message w-50 mx-auto position-absolute start-50 translate-middle-x" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
                         <Alert.Heading>{message.error}</Alert.Heading>
-                    </Alert> : message.success ?
+                    </Alert> : 
+                message.success ?
                     <Alert className="alert-message w-50 mx-auto position-absolute start-50 translate-middle-x" variant='success' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
                         <Alert.Heading>{message.success}</Alert.Heading>
                         <p>Redirecting to the Login page</p>
@@ -77,12 +85,12 @@ function Register() {
                     </Alert>}
                 <h3>Register</h3>
                     <form id="login-form" className="container my-0 align-items-center text-center" onSubmit={handleSubmit}>
-                        <input type="text" id="name" className="col text-input border-secondary mb-1 border-2 form-control" name="firstName" placeholder="First Name" required/>
-                        <input type="text" id="surname" className="col-xl-4 text-input border-secondary mb-1 border-2 form-control" name="lastName" placeholder="Last Name" required/>
-                        <input type="email" id="email" className="col text-input border-secondary mb-1 border-2 form-control" name="email" placeholder="Email address" required onChange={getEmail}></input>
-                        <input type="password" id="password" className="col text-input border-secondary mt-1 mb-1 border-2 form-control" name="password" placeholder="Password" required onChange={getPassword}></input>
-                        <input type="password" id="re-password" className="col text-input border-secondary mt-1 border-2 form-control"  placeholder="Confirm Password" required onChange={getConfirmPassword}></input>
-                        <input id="submit" className="m-4 btn-sm btn-warning" type="submit" value="Create Account" />  
+                        <div className='col-xl-6 col-lg-6 m-auto'><input type="text" id="name" className="text-input border-secondary mb-1 border-2 form-control" name="firstName" placeholder="First Name" required/></div>
+                        <div className='col-xl-6 col-lg-6 m-auto'><input type="text" id="surname" className="text-input border-secondary mb-1 border-2 form-control" name="lastName" placeholder="Last Name" required/></div>
+                        <div className='col-xl-6 col-lg-6 m-auto'><input type="email" id="email" className="text-input border-secondary mb-1 border-2 form-control" name="email" placeholder="Email address" required onChange={getEmail}></input></div>
+                        <div className='col-xl-6 col-lg-6 m-auto'><input type="password" autoComplete="new-password" id="new-password" className="text-input border-secondary mt-1 mb-1 border-2 form-control" name="password" placeholder="Password" required onChange={getPassword}></input></div>
+                        <div className='col-xl-6 col-lg-6 m-auto'><input type="password" autoComplete="new-password" id="re-password" className="text-input border-secondary mt-1 border-2 form-control"  placeholder="Confirm Password" required onChange={getConfirmPassword}></input></div>
+                        <div className='col-xl-6 col-lg-6 m-auto'><input id="submit" className="m-4 btn-sm btn-warning" type="submit" value="Create Account" /></div>
                     </form>
             </div>
         </div>

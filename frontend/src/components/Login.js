@@ -1,15 +1,19 @@
-import {Link} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import '../App'
 import '../css/addon.css'
 import { useState } from 'react'
 import { Alert } from 'react-bootstrap'
 
-function Login() {
-
+function Login(props) {
+    const navigate = useNavigate()
     const [email, setEmail] = useState(null)
     const [password, setPassword] = useState(null)
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState({})
+
+    const placeUserData = () => {
+        window.localStorage.setItem("User", "Darrell")
+    }
 
     const options = {
         method: 'POST',
@@ -26,7 +30,13 @@ function Login() {
                  if (data.error) {
                      setMessage(data)
                      setShowMessage(true)
-                 }})
+                 }
+                 else if (data.isAuth) {
+                    window.localStorage.setItem('loggedIn', true)
+                    window.localStorage.setItem("User", "Darrell")
+                    navigate('/')
+                 }
+                })
                 .catch(err => console.error(err))
     }
 
@@ -41,13 +51,14 @@ function Login() {
 
     return (
         <div className="vw-100 vh-100 n-0 p-0">
-            <div id="login-container" className="d-flex w-100 h-100 justify-content-center align-self-center align-items-center">
+            <div id="login-container" className="d-flex flex-column w-100 h-100 justify-content-center align-self-center align-items-center">
                 {showMessage && <Alert className="alert-message w-50 text-center mx-auto position-absolute start-50 translate-middle-x" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
                     <Alert.Heading>{message.error}</Alert.Heading>
                 </Alert>}
-                <form id="login-form" className="d-flex flex-column w-25 h-25 align-items-center text-center justify-content-center" onSubmit={handleSubmit}>
-                    <input type="email" id="email" className="text-input border-secondary mb-1 border-2 form-control" name="email" onChange={handleChange} placeholder="Email address" required></input>
-                    <input type="password" id="password" className="text-input border-secondary mt-1 border-2 form-control" name="password" onChange={handleChange} placeholder="Password" required></input>
+                <h3 className="text-center mb-5">Login</h3>
+                <form id="login-form" className="container my-0 align-items-center text-center" onSubmit={handleSubmit}>
+                    <div className='col-xl-6 col-lg-6 col-md-8 m-auto'><input type="email" id="email" className="text-input border-secondary mb-1 border-2 form-control" name="email" onChange={handleChange} placeholder="Email address" required></input></div>
+                    <div className='col-xl-6 col-lg-6 col-md-8 m-auto'><input type="password" autoComplete="current-password" id="current-password" className="text-input border-secondary mt-1 border-2 form-control" name="password" onChange={handleChange} placeholder="Password" required></input></div>
                     <input id="submit" className="m-4 btn-sm btn-warning" type="submit" value="Login" />
                     <p>If you do not have an account yet, click <Link to='/account/register'> here </Link> to register</p>
                 </form>

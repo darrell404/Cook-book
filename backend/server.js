@@ -5,6 +5,7 @@ const app = express();
 const LoginRoute = require('./routes/Login')
 const RegisterRoute = require('./routes/Register')
 const recipeRoute = require('./routes/recipelist')
+const LogoutRoute = require('./routes/Logout')
 const session = require("express-session")
 const MongoDBSession = require("connect-mongodb-session")(session)
 const cookieParser = require("cookie-parser")
@@ -40,7 +41,6 @@ app.use(session({
 
 app.get('/', (req, res) => {
     req.session.isAuth = true
-    console.log(req.session)
     res.send("This is the root location!")
 })
 
@@ -51,6 +51,8 @@ app.use('/recipes', recipeRoute)
 app.use('/login', LoginRoute)
 
 app.use('/register', RegisterRoute)
+
+app.use('/logout', LogoutRoute)
 
 app.listen(5000, () => {
     console.log("Server is now running!")

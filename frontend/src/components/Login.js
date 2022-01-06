@@ -11,8 +11,8 @@ function Login(props) {
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState({})
 
-    const placeUserData = () => {
-        window.localStorage.setItem("User", "Darrell")
+    const storeToLocalStorage = (loggedIn, userData) => {
+        props.setLocalStorage(loggedIn, userData)
     }
 
     const options = {
@@ -25,15 +25,14 @@ function Login(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const LoggingIn = await fetch('/login', options).then(response => response.json())
+        const LoggingIn = await fetch('/login', options).then(response => response.json()).catch(err => console.err(err))
             .then(data => { 
                  if (data.error) {
                      setMessage(data)
                      setShowMessage(true)
                  }
                  else if (data.isAuth) {
-                    window.localStorage.setItem('loggedIn', true)
-                    window.localStorage.setItem("User", "Darrell")
+                    storeToLocalStorage(true, "Darrell")
                     navigate('/')
                  }
                 })

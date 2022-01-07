@@ -1,7 +1,8 @@
 import '../css/main.css'
 import '../css/addon.css'
-import setFavourite from '../Assets/Set-Favourite.svg'
-import { useState, useRef, forwardRef } from 'react'
+import setToFavourite from '../Assets/Set-Favourite.svg'
+import addedToFavourite from '../Assets/Favourite.svg'
+import { useState, useRef, forwardRef, useEffect } from 'react'
 import {useLocation, Link} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
@@ -21,7 +22,6 @@ export function Main(props) {
   var [offset, setOffset] = useState()
 
   var searchedRecipeRef = useRef('')
-
 
   const fetchRecipes = async () => await axios(`/recipes/search/${props.searchRecipe}`).then(response => storeShowFood(response.data))
 
@@ -43,6 +43,10 @@ export function Main(props) {
     props.updateShowFood(data)
   }
 
+  const updateFavourites = (foodId) => {
+    props.updateFavouriteState(foodId)
+  }
+
   return (
     <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
@@ -52,7 +56,7 @@ export function Main(props) {
             <button type="submit" className="search btn-lg bg-warning"><i className="fa fa-search"></i></button>
             </form>
         </div>
-      <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} ref={searchedRecipeRef}/>
+      <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} ref={searchedRecipeRef} updateFavourites={updateFavourites} favourites={props.favourites}/>
     </div>
   );
 }
@@ -66,7 +70,7 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
         {fetchedFood && fetchedFood.length !== 0 && <Filter food={fetchedFood}/>}
         <div className="container justify-content-center">
           <div className="d-flex flex flex-wrap mx-auto justify-content-center">
-          {fetchedFood && fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food}/>)}
+          {fetchedFood && fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food} updateFavourites={props.updateFavourites} favourites={props.favourites}/>)}
           </div>
         </div>
       </div>
@@ -103,6 +107,15 @@ function Filter() {
 } 
 
 function RecipeBox(props) {
+  const [favouriteIcon, setFavouriteIcon] = useState(false)
+  useEffect(() => {
+    if (props.favourites.includes(props.foodInfo.id)) {
+      setFavouriteIcon(true)
+      console.log(`I have been added to the favourites ${props.foodInfo.id}`)
+    }
+    else setFavouriteIcon(false)
+  }, [props.favourites])
+
   return(
       <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "330px"}}>
         <Link to={`/recipe/${props.foodInfo.id}`} className="recipe-link" state={{from: 'Main'}}>
@@ -112,7 +125,7 @@ function RecipeBox(props) {
           </Card.Title>
         </Link>
         <Card.Text>
-          <span className="d-flex justify-content-center"><img className="m-4" src={setFavourite} alt="Favourite" /></span>
+          <span className="d-flex justify-content-center"><img className="favourite-icon m-4" onClick={() => props.updateFavourites(props.foodInfo.id)} src={favouriteIcon ? addedToFavourite : setToFavourite} alt="Favourite" /></span>
         </Card.Text>
       </Card>
   )

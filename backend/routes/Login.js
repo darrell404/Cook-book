@@ -8,15 +8,15 @@ const User = require('../models/User');
 router.route('/').post(async (req, res) => {
     const {email, password} = req.body
     try {
-    const getUserAccount = await User.findOne({email})
+    const getUserAccount = await User.findOne({email}).select('password')
         if (getUserAccount) {
             const encryptPassword = await bcrypt.compare(password, getUserAccount.password, (err, result) => {
                 if (err) console.log(err)
                 else if(result) {
                     req.session.isAuth = true
                     req.session.email = email
+                    req.session.userID = getUserAccount._id
                     req.session.save();
-                    console.log(req.session)
                     console.log(`User account ${req.body.email} has been found!`)
                     res.send(req.session)
                 }
@@ -27,7 +27,10 @@ router.route('/').post(async (req, res) => {
             })
         }
 
-        else (console.log("User does not exist!"))
+        else {
+            res.send({"error" : "Incorrect username or password"})
+            (console.log("User does not exist!"))
+        }
     }
     catch(err) {
         console.log(err)

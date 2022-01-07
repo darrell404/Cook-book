@@ -47,6 +47,10 @@
   width: 25%;
 }
 
+.favourite-icon {
+  cursor: pointer
+}
+
 .search:hover {
   background: #3f85c7e7;
 }

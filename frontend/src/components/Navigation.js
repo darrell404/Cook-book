@@ -1,8 +1,8 @@
 import { Button, Dropdown } from "react-bootstrap"
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 
 function Navigation(props) {
-
+  const navigate = useNavigate();
   const options = {
     method: 'POST',
     headers: {
@@ -15,6 +15,7 @@ function Navigation(props) {
     const logOut = async () => {
       const loggingOut = await fetch('/logout', options).then(response => response.json()).catch((err) => console.log(err))
       props.clearLocalStorage()
+      navigate('/account/login')
     }
 
     return (

@@ -25,7 +25,7 @@ function Login(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const LoggingIn = await fetch('/login', options).then(response => response.json()).catch(err => console.err(err))
+        const LoggingIn = await fetch('/login', options).then(response => response.json()).catch(err => console.log(err))
             .then(data => { 
                  if (data.error) {
                      setMessage(data)

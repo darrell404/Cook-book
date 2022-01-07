@@ -6,6 +6,7 @@ const LoginRoute = require('./routes/Login')
 const RegisterRoute = require('./routes/Register')
 const recipeRoute = require('./routes/recipelist')
 const LogoutRoute = require('./routes/Logout')
+const FavouritesRoute = require('./routes/Favourites')
 const session = require("express-session")
 const MongoDBSession = require("connect-mongodb-session")(session)
 const cookieParser = require("cookie-parser")
@@ -53,6 +54,8 @@ app.use('/login', LoginRoute)
 app.use('/register', RegisterRoute)
 
 app.use('/logout', LogoutRoute)
+
+app.use('/favourites', FavouritesRoute)
 
 app.listen(5000, () => {
     console.log("Server is now running!")

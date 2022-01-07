@@ -18,11 +18,16 @@ const userLoginSchema = new Schema({
     },
     password: {
         type: String,
-        required: true
+        required: true,
+        select: false
     },
     createdAt: {
         type: Date,
-        default: Date.now()
+        default: Date.now(),
+        select: false
+    },
+    favourites: {
+        type: Array
     }
 })
 

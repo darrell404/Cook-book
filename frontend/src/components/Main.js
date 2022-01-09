@@ -25,8 +25,7 @@ export function Main(props) {
 
   const fetchRecipes = async () => await axios(`/recipes/search/${props.searchRecipe}`).then(response => storeShowFood(response.data))
 
-  const submit = (event) => {
-    event.preventDefault();
+  const submit = () => {
     if (props.searchRecipe === '' | props.searchRecipe === undefined) { 
         searchedRecipeRef.current = '';
         return
@@ -47,11 +46,17 @@ export function Main(props) {
     props.updateFavouriteState(foodId)
   }
 
+  const fetchRecipesAndFavourites = (event) => {
+    event.preventDefault();
+    props.fetchFavouriteState(event)
+    submit();
+  }
+
   return (
     <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <div className="search-container d-flex">
-            <form onSubmit={submit} className="w-100 form-control d-flex flex-row justify-content-center border-0">
+            <form onSubmit={fetchRecipesAndFavourites} className="w-100 form-control d-flex flex-row justify-content-center border-0">
             <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-50 rounded-0"></input>
             <button type="submit" className="search btn-lg bg-warning"><i className="fa fa-search"></i></button>
             </form>
@@ -111,7 +116,6 @@ function RecipeBox(props) {
   useEffect(() => {
     if (props.favourites.includes(props.foodInfo.id)) {
       setFavouriteIcon(true)
-      console.log(`I have been added to the favourites ${props.foodInfo.id}`)
     }
     else setFavouriteIcon(false)
   }, [props.favourites])

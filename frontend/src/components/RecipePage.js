@@ -2,7 +2,7 @@ import '../css/addon.css'
 import { useParams } from 'react-router-dom'
 import axios from 'axios';
 import { useEffect, useState } from 'react';
-import { ListGroup, Row, Col, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import { ListGroup, Row, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
 function RecipePage(props) {
     const [metric, setMetric] = useState("us")
@@ -23,12 +23,6 @@ function RecipePage(props) {
         let recipeSummary = recipeData.summary.split('.').slice(0, 2);
         return {
             __html: recipeSummary
-        }
-    }
-
-    function addInstructions() {
-        return {
-            __html: recipeData.instructions
         }
     }
 

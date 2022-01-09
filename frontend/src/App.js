@@ -2,6 +2,7 @@ import './App.css';
 import './css/main.css'
 import  { Main } from './components/Main'
 import RecipePage from './components/RecipePage';
+import FavouritePage from './components/FavouritePage'
 import { Fragment, useState, useEffect } from 'react';
 import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './components/Login';
@@ -46,7 +47,7 @@ function App() {
       },
       body: JSON.stringify({"favourites": fav})
     }
-    const updateFavouriteOnDB = await fetch('/favourites/add', options).then(res => res.json()).then(data => console.log(data))
+    const updateFavouriteOnDB = await fetch('/favourites/add', options).then(res => res.json()).then(data => data)
   }
 
   const updateFavouriteState = (foodID) => {
@@ -62,14 +63,21 @@ function App() {
     }
   }
 
+  const fetchFavouriteState = async (event) => {
+    if (event) event.preventDefault();
+    const getAllFavourites = await fetch('/favourites').then(res => res.json()).then(data => data.favourites)
+    setFavourites(getAllFavourites)
+  }
+
   return (
     <div className='w-100 h-100 n-0 p-0'>
     <Router>
        <Fragment>
         <Navigation loggedIn={loggedIn} userData={userData} clearLocalStorage={clearLocalStorage}/>
         <Routes>
-          <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood} loggedIn={loggedIn} favourites={favourites} updateFavouriteState={updateFavouriteState}/>} />
+          <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood} loggedIn={loggedIn} favourites={favourites} updateFavouriteState={updateFavouriteState} fetchFavouriteState={fetchFavouriteState}/>} />
           <Route path='/recipe/:id' element={<RecipePage/>} />
+          <Route path='/account/favourites' element={loggedIn ? <FavouritePage favourites={favourites} setFavourites={setFavourites} fetchFavouriteState={fetchFavouriteState}/> : <Navigate to='/account/login' />} />
           <Route exact path='/account/login' element={loggedIn ? <Navigate to='/'/> : <Login setLocalStorage={setLocalStorage}/>} />
           <Route exact path='/account/register' element={loggedIn ? <Navigate to='/'/> : <Register/>}/>
         </Routes>

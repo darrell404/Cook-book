@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { RecipeBox } from '../components/Main'
+import { Link } from 'react-router-dom'
+import { Card } from 'react-bootstrap'
+import favouriteIcon from '../Assets/Favourite.svg'
 
 function FavouritePage(props) {
 
-    const [myFavourites, setMyFavourites] = useState([])
+    const [myFavourites, setMyFavourites] = useState('')
 
     const fetchFavourites = () => {
         props.fetchFavouriteState()
@@ -14,29 +16,44 @@ function FavouritePage(props) {
     }, [])
 
     useEffect(() => {
-        if(props.favourites) {
-            props.favourites.forEach(id => {
-                let fetchFavouriteData = async() => {
-                    const dataFetched = await fetch(`/recipes/info/${id}`).then(res => res.json()).then(data => data)
-                    setMyFavourites(data => [...myFavourites, data])
-                }
-                fetchFavouriteData()
-            })
-            console.log(myFavourites)
+        const fetchFavouritesFromAPI = async() => {
+            const options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({"favourites" : props.favourites })
+            }
+            const fetchFromAPI = await fetch('/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.fetchFavourites[0]))
+            setMyFavourites(fetchFromAPI)
         }
-    }, [props.favourites])
+            fetchFavouritesFromAPI()
+    }, [])
 
-    if(props.favourites)
+    if(myFavourites)
     return (
-        <div id="favourites-container">
-            <p>{props.favourites}</p>
-            <p>{myFavourites}</p>
+        <div id="favourites-container" className="mx-auto w-75">
+            <h3 className="text-center">My Favourites</h3>
+            <div id="card-container" className="mx-auto d-flex align-items justify-content-center">
+                <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "330px"}}>
+                    <Link to={`/recipe/${myFavourites.id}`} className="recipe-link" state={{from: 'Main'}}>
+                    <Card.Img className="recipe-image card-image-top mx-auto d-block" src={myFavourites.image}/>
+                    <Card.Title>
+                        <h5 className="recipe-title text-center">{myFavourites.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
+                    </Card.Title>
+                    </Link>
+                    <Card.Text>
+                    <span className="d-flex justify-content-center"><img className="favourite-icon m-4" src={favouriteIcon} alt="Favourite" /></span>
+                    </Card.Text>
+                </Card>
+            </div>
         </div>
     )
 
     else return (
-        <div>
-            No data found
+        <div id="favourites-container" className="mx-auto w-75 text-center">
+            <h3 className="text-center">My Favourites</h3>
+            No items in your Favourites
         </div>
     )
 }

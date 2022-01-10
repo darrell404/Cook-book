@@ -36,7 +36,7 @@ function Login(props) {
                     navigate('/')
                  }
                 })
-                .catch(err => console.error(err))
+                .catch(err => console.log(err))
     }
 
     const handleChange = (event) => {

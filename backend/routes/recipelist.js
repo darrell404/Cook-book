@@ -46,18 +46,25 @@ router.route('/info/:recipeID').get((req,res) => {
     }
 })
 
-router.route('/searchRecipes').post(async (req,res) => {
-    const recipeList = req.body
-    try {
-        const fetchFavourites = await Recipe.find({id: req.body.favourites})
-        if (fetchFavourites) {
-            console.log(fetchFavourites)
+router.route('/searchRecipes').post((req,res) => {
+    const recipeList = req.body.favourites
+    var favouriteArray = []
+
+    const fetchData = async() => {
+        try {
+            const fetchFavourites = await Recipe.find({recipeID: { $in : recipeList }}).then((dataReceived) => {
+                if (dataReceived) {
+                    res.json({"favouriteArray": dataReceived})
+                }
+                else res.json({"msg" : "Data not found"})
+            })
         }
-        res.json({fetchFavourites})
+        catch(err) {
+            console.log(err)
+        }
     }
-    catch(err) {
-        console.log(err)
-    }
+    fetchData()
+
 })
 
 module.exports = router

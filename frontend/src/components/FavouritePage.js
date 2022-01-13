@@ -2,28 +2,31 @@ import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import favouriteIcon from '../Assets/Favourite.svg'
+import noImage from '../Assets/no-image.jpg'
 
-function FavouritePage(props) {
+function FavouritePage() {
 
-    const [myFavourites, setMyFavourites] = useState('')
-
-    const fetchFavourites = () => {
-        props.fetchFavouriteState()
-    }
+    const [favouriteArray, setMyFavouriteArray] = useState([])
+    const [myFavourites, setMyFavourites] = useState()
 
     useEffect(() => {
-        fetchFavourites()
+         const fetchFavouriteArray = async() => {
+            const getAllFavourites = await fetch('/favourites').then(res => res.json()).then(data => data.favourites)
+            setMyFavouriteArray(getAllFavourites)
+            console.log(getAllFavourites)
+        }
+        fetchFavouriteArray()
     }, [])
 
     useEffect(() => {
-        if (props.favourites.length !== 0) {
+        if (favouriteArray !== 0) {
             const fetchFavouritesFromAPI = async() => {
                 const options = {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({"favourites" : props.favourites })
+                    body: JSON.stringify({"favourites" : favouriteArray })
                 }
                 const fetchFromAPI = await fetch('/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
                 console.log(fetchFromAPI)
@@ -31,7 +34,7 @@ function FavouritePage(props) {
             }
                 fetchFavouritesFromAPI()
         }
-    }, [props.favourites])
+    }, [favouriteArray])
 
     if(myFavourites)
     return (
@@ -42,7 +45,7 @@ function FavouritePage(props) {
                 <div key={favourite.recipeID} id="card" className="mx-2 d-flex align-items justify-content-center">
                     <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "330px"}}>
                         <Link to={`/recipe/${favourite.recipeID}`} className="recipe-link" state={{from: 'Main'}}>
-                        <Card.Img className="recipe-image card-image-top mx-auto d-block" src={favourite.image}/>
+                        <Card.Img className="recipe-image card-image-top mx-auto d-block" src={favourite.image ? favourite.image : noImage}/>
                         <Card.Title>
                             <h5 className="recipe-title text-center">{favourite.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
                         </Card.Title>

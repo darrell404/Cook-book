@@ -23,12 +23,10 @@ router.route('/').get(async (req, res) => {
 
 router.route('/add').post(async (req, res) => {
     if(req.session.userID) {
-        let foundUser = req.session.userID
-        console.log(req.body.favourites)
-        let updateUser = await User.findOneAndUpdate(foundUser, { $set: req.body }, {
+        let userEmail = req.session.email
+        let updateUser = await User.findOneAndUpdate({"email": userEmail}, { $set: req.body }, {
             new: true, upsert: true, returnOriginal: false
         })
-        console.log(updateUser)
         res.json({"msg": "done"})
     }
     

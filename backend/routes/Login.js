@@ -13,6 +13,7 @@ router.route('/').post(async (req, res) => {
             const encryptPassword = await bcrypt.compare(password, getUserAccount.password, (err, result) => {
                 if (err) console.log(err)
                 else if(result) {
+                    console.log(result)
                     req.session.isAuth = true
                     req.session.email = email
                     req.session.userID = getUserAccount._id

@@ -1,0 +1,16 @@
+{
+  "name": "Cook-book",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:darrell404/Cook-book.git",
+  "author": "darrell404 <darrell029@gmail.com>",
+  "scripts": {
+    "frontend": "cd ./frontend/ && yarn start",
+    "backend": "cd ./backend && yarn serve",
+    "dev": "concurrently \"npm run frontend\" \"npm run backend\""
+  },
+  "license": "MIT",
+  "dependencies": {
+    "concurrently": "^7.0.0"
+  }
+}

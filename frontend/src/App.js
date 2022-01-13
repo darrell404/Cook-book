@@ -51,6 +51,20 @@ function App() {
   }
 
   const updateFavouriteState = (foodID) => {
+    const options = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({"foodID": foodID})
+    }
+
+    const checkFavouriteIfExists = async() => {
+      const getFavourite = await fetch('/recipes/searchSingleRecipe', options)
+    }
+
+    checkFavouriteIfExists()
+
     if (favourites.includes(foodID)) {
       const removeFavourite = favourites.filter(food => food !== foodID)
       setFavourites(removeFavourite)
@@ -77,7 +91,7 @@ function App() {
         <Routes>
           <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood} loggedIn={loggedIn} favourites={favourites} updateFavouriteState={updateFavouriteState} fetchFavouriteState={fetchFavouriteState}/>} />
           <Route path='/recipe/:id' element={<RecipePage/>} />
-          <Route path='/account/favourites' element={loggedIn ? <FavouritePage favourites={favourites} setFavourites={setFavourites} fetchFavouriteState={fetchFavouriteState}/> : <Navigate to='/account/login' />} />
+          <Route path='/account/favourites' element={loggedIn ? <FavouritePage /> : <Navigate to='/account/login' />} />
           <Route exact path='/account/login' element={loggedIn ? <Navigate to='/'/> : <Login setLocalStorage={setLocalStorage}/>} />
           <Route exact path='/account/register' element={loggedIn ? <Navigate to='/'/> : <Register/>}/>
         </Routes>

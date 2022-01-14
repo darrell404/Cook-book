@@ -12,6 +12,8 @@ function Register() {
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState({})
     const [passwordMatch, setPasswordMatch] = useState(true)
+    const [disableButton, setDisableButton] = useState(false)
+
     const navigate = useNavigate()
 
     const handleSubmit = async (event) => {
@@ -31,6 +33,7 @@ function Register() {
         }
         const sendData = await fetch('/register', options).then(response => response.json())
         if(sendData.success) {
+            setDisableButton(true)
             setMessage(sendData)
             setShowMessage(true)
             setTimeout(() => {
@@ -90,7 +93,7 @@ function Register() {
                         <div className='col-xl-6 col-lg-6 m-auto'><input type="email" id="email" className="text-input border-secondary mb-1 border-2 form-control" name="email" placeholder="Email address" required onChange={getEmail}></input></div>
                         <div className='col-xl-6 col-lg-6 m-auto'><input type="password" autoComplete="new-password" id="new-password" className="text-input border-secondary mt-1 mb-1 border-2 form-control" name="password" placeholder="Password" required onChange={getPassword}></input></div>
                         <div className='col-xl-6 col-lg-6 m-auto'><input type="password" autoComplete="new-password" id="re-password" className="text-input border-secondary mt-1 border-2 form-control"  placeholder="Confirm Password" required onChange={getConfirmPassword}></input></div>
-                        <div className='col-xl-6 col-lg-6 m-auto'><input id="submit" className="m-4 btn-sm btn-warning" type="submit" value="Create Account" /></div>
+                        <div className='col-xl-6 col-lg-6 m-auto'><input id="submit" disabled={disableButton} className="m-4 btn-sm btn-warning" type="submit" value="Create Account" /></div>
                     </form>
             </div>
         </div>

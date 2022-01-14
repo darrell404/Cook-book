@@ -11,8 +11,8 @@ function Login(props) {
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState({})
 
-    const storeToLocalStorage = (loggedIn, userData) => {
-        props.setLocalStorage(loggedIn, userData)
+    const storeToLocalStorage = (loggedIn, userData, expiry) => {
+        props.setLocalStorage(loggedIn, userData, expiry)
     }
 
     const options = {
@@ -27,13 +27,15 @@ function Login(props) {
         event.preventDefault();
         const LoggingIn = await fetch('/login', options).then(response => response.json())
             .then(data => { 
-                console.log(data)
                  if (data.error) {
                      setMessage(data)
                      setShowMessage(true)
                  }
                  else if (data.isAuth) {
-                    storeToLocalStorage(true, "Darrell")
+                    const expiryEnd = (1000 * 60 * 10)
+                    const currentTime = new Date()
+                    const expiryTime = new Date(currentTime.getTime() + expiryEnd)
+                    storeToLocalStorage(true, data.name, expiryTime.getTime())
                     navigate('/')
                  }
                 })

@@ -4,22 +4,26 @@ import { Card } from 'react-bootstrap'
 import favouriteIcon from '../Assets/Favourite.svg'
 import noImage from '../Assets/no-image.jpg'
 
-function FavouritePage() {
+function FavouritePage(props) {
 
     const [favouriteArray, setMyFavouriteArray] = useState([])
     const [myFavourites, setMyFavourites] = useState()
+    const [deleteEntry, setDeleteEntry] = useState(false)
 
     useEffect(() => {
          const fetchFavouriteArray = async() => {
             const getAllFavourites = await fetch('/favourites').then(res => res.json()).then(data => data.favourites)
             setMyFavouriteArray(getAllFavourites)
-            console.log(getAllFavourites)
         }
         fetchFavouriteArray()
     }, [])
 
     useEffect(() => {
         if (favouriteArray !== 0) {
+            if(deleteEntry == true) {
+                props.updateDB(favouriteArray)
+                setDeleteEntry(false)
+            }
             const fetchFavouritesFromAPI = async() => {
                 const options = {
                     method: 'POST',
@@ -29,12 +33,16 @@ function FavouritePage() {
                     body: JSON.stringify({"favourites" : favouriteArray })
                 }
                 const fetchFromAPI = await fetch('/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
-                console.log(fetchFromAPI)
                 setMyFavourites(fetchFromAPI)
             }
                 fetchFavouritesFromAPI()
         }
     }, [favouriteArray])
+
+    const removeFavourite = (favouriteID) => {
+        setDeleteEntry(true)
+        setMyFavouriteArray(favouriteArray.filter(recipe => recipe !== favouriteID))
+    }
 
     if(myFavourites)
     return (
@@ -51,7 +59,7 @@ function FavouritePage() {
                         </Card.Title>
                         </Link>
                         <Card.Text>
-                        <span className="d-flex justify-content-center"><img className="favourite-icon m-4" src={favouriteIcon} alt="Favourite" /></span>
+                        <span className="d-flex justify-content-center"><img className="favourite-icon m-4" src={favouriteIcon} onClick={() => removeFavourite(favourite.recipeID)} alt="Favourite" /></span>
                         </Card.Text>
                     </Card>
                 </div>

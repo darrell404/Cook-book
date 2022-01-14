@@ -3,7 +3,7 @@ import '../css/addon.css'
 import setToFavourite from '../Assets/Set-Favourite.svg'
 import addedToFavourite from '../Assets/Favourite.svg'
 import { useState, useRef, forwardRef, useEffect } from 'react'
-import {useLocation, Link} from 'react-router-dom'
+import {useLocation, Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
  
@@ -19,6 +19,8 @@ const filterObject = {
 
 export function Main(props) {
   const location = useLocation();
+  const navigate = useNavigate();
+
   var [offset, setOffset] = useState()
 
   var searchedRecipeRef = useRef('')
@@ -43,7 +45,12 @@ export function Main(props) {
   }
 
   const updateFavourites = (foodId) => {
-    props.updateFavouriteState(foodId)
+    if(props.loggedIn === false) {
+      console.log(props.loggedIn)
+      navigate('/account/login')
+      return
+    }
+    else props.updateFavouriteState(foodId)
   }
 
   const fetchRecipesAndFavourites = (event) => {

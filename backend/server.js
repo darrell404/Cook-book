@@ -38,7 +38,10 @@ app.use(session({
     secret: "This is my cook book",
     resave: false,
     saveUninitialized: false,
-    store: store
+    store: store,
+    cookie: {
+        maxAge: 1000 * 60 * 10
+    }
 })) 
 
 app.get('/', (req, res) => {

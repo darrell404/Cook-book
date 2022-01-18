@@ -69,7 +69,7 @@ function App() {
       body: JSON.stringify({"foodID": foodID})
     }
     const checkFavouriteIfExists = async() => {
-      const getFavourite = await fetch('/recipes/searchSingleRecipe', options)
+      const getFavourite = await fetch('/recipes/searchSingleRecipe', options).then(res => console.log(res))
     }
 
     checkFavouriteIfExists()

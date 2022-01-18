@@ -1,6 +1,5 @@
 import '../css/addon.css'
 import { useParams } from 'react-router-dom'
-import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ListGroup, Row, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 
@@ -8,8 +7,7 @@ function RecipePage(props) {
     const [metric, setMetric] = useState("us")
     const [recipeData, setRecipeData] = useState(null)
     var { id } = useParams();
-    // const getRecipeData = async () => await axios(`/recipes/info/${id}`).then(response => setRecipeData(response.data))
-    const getRecipeData = async () => await axios("http://localhost:8080/recipes/1").then(response => setRecipeData(response.data))
+    const getRecipeData = async () => await fetch(`/recipes/info/${id}`).then(response => response.json()).then(data => setRecipeData(data))
 
     useEffect(() => {
         getRecipeData()

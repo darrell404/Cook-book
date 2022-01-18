@@ -15,10 +15,9 @@ router.route('/').get((req,res) => {
     res.send("This is the Recipes endpoint")
 })
 
-router.route('/search/:recipename').get((req,res) => {
-    
+router.route('/search/:recipename').get(async (req,res) => {
     try {
-        const fetchRecipes = axios(`${URL}/complexSearch?query=${req.params.recipename}&apiKey=${APIKEY}`)
+        const fetchRecipes = await axios(`${URL}/complexSearch?query=${req.params.recipename}&apiKey=${APIKEY}`)
                                 .then(response => res.send(response.data))
                                     .catch(function(error) { 
                                         if (error.response.data.code === 402) {
@@ -32,16 +31,24 @@ router.route('/search/:recipename').get((req,res) => {
     }
 })
 
-router.route('/info/:recipeID').get((req,res) => {
+router.route('/info/:recipeID').get(async (req,res) => {
+    const baseURL = 'http://localhost:5000'
+    const options = {
+        method: 'post',
+        url: baseURL + '/recipes/searchSingleRecipe',
+        data: {
+            foodID: req.params.recipeID
+        }
+    }
+
     try {
-        const fetchRecipeFromID = () => axios(`${URL}/${req.params.recipeID}/information?apiKey=${APIKEY}`)
-                                            .then(response => res.send(response.data))
-                                                .catch(function(error) { 
-                                                    if (error.response.data.code === 402) {
-                                                        res.json({"message": "3rd party API limit reached"})
-                                                        console.log({"Error": "3rd party API limit reached"})
-                                                    }
-                                                })
+        const fetchRecipe = await axios(options).then(res => console.log(res.data)).catch((error) => {console.log(error)})
+        const getRecipeFromDB = await RecipeFromAPI.find({recipeID: req.params.recipeID}).then((dataReceived => {
+            if (dataReceived.length !== 0) {
+                res.send(dataReceived[0])
+            }
+            else console.log("Error")
+        }))
     }
     catch(err) {
         console.log(err)
@@ -50,8 +57,6 @@ router.route('/info/:recipeID').get((req,res) => {
 
 router.route('/searchRecipes').post((req,res) => {
     const recipeList = req.body.favourites
-    var favouriteArray = []
-
     const fetchData = async() => {
         try {
             const fetchFavourites = await Recipe.find({recipeID: { $in : recipeList }}).then((dataReceived) => {

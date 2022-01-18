@@ -32,6 +32,7 @@ app.use(cors({
     methods: ["GET", "POST"],
     credentials: true
 }));
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser())
 app.use(session({

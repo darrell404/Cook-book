@@ -23,6 +23,7 @@ function Register() {
             hideAlert()
             return
         }
+        setDisableButton(true)
         const {firstName, lastName} = event.target
         const options = {
             method: 'POST',
@@ -41,6 +42,7 @@ function Register() {
             }, 1500)
         }
         if(sendData.error) {
+            setDisableButton(false)
             setMessage(sendData)
             setShowMessage(true)
             setTimeout(() => {

@@ -3,8 +3,6 @@ const express = require("express")
 const router = express.Router()
 require('dotenv').config()
 const Recipe = require('../models/Recipe');
-const RecipeFromAPI = require('../models/RecipeFromAPI')
-
 
 const URL = process.env.RECIPE_URL
 const APIKEY = process.env.API_KEY
@@ -43,7 +41,7 @@ router.route('/info/:recipeID').get(async (req,res) => {
 
     try {
         const fetchRecipe = await axios(options).then(res => console.log(res.data)).catch((error) => {console.log(error)})
-        const getRecipeFromDB = await RecipeFromAPI.find({recipeID: req.params.recipeID}).then((dataReceived => {
+        const getRecipeFromDB = await Recipe.find({recipeID: req.params.recipeID}).then((dataReceived => {
             if (dataReceived.length !== 0) {
                 res.send(dataReceived[0])
             }
@@ -85,7 +83,7 @@ router.route('/searchSingleRecipe').post(async (req,res) => {
             fetchRecipe.recipeID = fetchRecipe.id
             delete fetchRecipe.id
                 try {
-                    const addNewRecipe = await RecipeFromAPI.create(fetchRecipe)
+                    const addNewRecipe = await Recipe.create(fetchRecipe)
                     res.json({"msg": "success"})
                 }
                 catch(err) {

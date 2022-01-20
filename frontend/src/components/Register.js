@@ -71,7 +71,7 @@ function Register() {
     }
 
     return (
-        <div className="w-100 vh-100 n-0 p-0">
+        <div className="w-100 my-auto p-0">
             <div id="login-container" className="position-relative d-flex flex-column text-center justify-content-center w-100 h-100">
                 {showMessage && 
                 message.error ?

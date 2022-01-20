@@ -143,10 +143,10 @@ function RecipeBox(props) {
   }, [props.favourites])
 
   return(
-      <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "330px"}}>
+      <Card className="mt-3 p-2 mx-1 card-box" style={{ width: "250px", height: "340px"}}>
         <Link to={`/recipe/${props.foodInfo.id}`} className="recipe-link" state={{from: 'Main'}}>
-          <Card.Img className="recipe-image card-image-top mx-auto d-block" src={props.foodInfo.image}/>
-          <Card.Title>
+          <Card.Img className="recipe-image card-image-top d-block" src={props.foodInfo.image}/>
+          <Card.Title className="pt-2" style={{height: "60px"}}>
             <h5 className="recipe-title text-center">{props.foodInfo.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
           </Card.Title>
         </Link>

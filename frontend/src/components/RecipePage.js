@@ -51,7 +51,7 @@ function RecipePage(props) {
                             <Tab eventKey="recipe" title="Recipe">
                                 <div className='pl-5 mt-4'>
                                     <ol>
-                                    {recipeData.analyzedInstructions[0].steps.map(e => <li>{e.step}</li>)}
+                                    {recipeData.analyzedInstructions[0].steps.map((e,index) => <li key={index}>{e.step}</li>)}
                                     </ol>
                                 </div>
                             </Tab>

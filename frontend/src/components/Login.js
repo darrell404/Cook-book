@@ -36,7 +36,7 @@ function Login(props) {
                     const currentTime = new Date()
                     const expiryTime = new Date(currentTime.getTime() + expiryEnd)
                     storeToLocalStorage(true, data.name, expiryTime.getTime())
-                    navigate('/')
+                    navigate('/account/favourites')
                  }
                 })
                 .catch(err => console.log(err))
@@ -52,7 +52,7 @@ function Login(props) {
     }
 
     return (
-        <div className="vw-100 vh-100 n-0 p-0">
+        <div className="w-100 h-100 p-0">
             <div id="login-container" className="d-flex flex-column w-100 h-100 justify-content-center align-self-center align-items-center">
                 {showMessage && <Alert className="alert-message w-50 text-center mx-auto position-absolute start-50 translate-middle-x" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
                     <Alert.Heading>{message.error}</Alert.Heading>

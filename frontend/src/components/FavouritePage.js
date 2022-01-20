@@ -51,10 +51,10 @@ function FavouritePage(props) {
             <div id="card-container" className="d-flex flex flex-wrap mx-auto justify-content-center">
                 {myFavourites.map(favourite => 
                 <div key={favourite.recipeID} id="card" className="mx-2 d-flex align-items justify-content-center">
-                    <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "330px"}}>
+                    <Card className="mt-3 p-2 mx-1" style={{ width: "250px", height: "340px"}}>
                         <Link to={`/recipe/${favourite.recipeID}`} className="recipe-link" state={{from: 'Main'}}>
                         <Card.Img className="recipe-image card-image-top mx-auto d-block" src={favourite.image ? favourite.image : noImage}/>
-                        <Card.Title>
+                        <Card.Title className="pt-2" style={{height: "60px"}}>
                             <h5 className="recipe-title text-center">{favourite.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
                         </Card.Title>
                         </Link>

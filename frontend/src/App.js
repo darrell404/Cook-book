@@ -93,7 +93,7 @@ function App() {
   }
 
   return (
-    <div className='w-100 h-100 n-0 p-0'>
+    <div className='w-100 h-100 p-0'>
     <Router>
        <Fragment>
         <Navigation loggedIn={loggedIn} userData={userData} expiry={expiry} clearLocalStorage={clearLocalStorage}/>

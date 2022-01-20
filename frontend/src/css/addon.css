@@ -1,3 +1,9 @@
+:root {
+  --padding-from-nav: 2rem;
+  --padding-from-nav-extra: 10rem;
+  --navbar-color: #202529;
+}
+  
   body {
   padding: 0;
   margin: 0;
@@ -16,6 +22,11 @@
   margin-left: 5%;
 }
 
+#logo-title {
+  font-size: 2em;
+  font-weight: bold;
+}
+
 .homepage-logo  {
   color: rgba(41, 37, 37, 0.836);
 }
@@ -29,6 +40,16 @@
   height: 10%;
 }
 
+.navbar-toggle {
+  color: white;
+  border: none;
+  background-color: var(--navbar-color);
+}
+
+#nav-burger { 
+  font-size: 36px;
+}
+
 .recipe-link, .recipe-link:visited, .recipe-link:active {
   color:black;
   text-decoration: none;
@@ -39,7 +60,7 @@
 }
 
 .search-container {
-  padding-top: 120px;
+  padding-top: var(--padding-from-nav);
   width: 100%;
 }
 
@@ -69,13 +90,13 @@
 }
 
 .recipe-container {
-  padding: 200px 0 0;
+  padding-top: var(--padding-from-nav);
 }
 
 /* Login.js CSS */
 
 #login-container {
-  padding-top: 120px;
+  padding-top: var(--padding-from-nav-extra);
 }
 
 /* Register.js CSS */
@@ -87,7 +108,7 @@
 /* Favourite Page CSS */
 
 #favourites-container {
-  padding-top: 120px;
+  padding-top: var(--padding-from-nav);
 }
 
 @keyframes spin {

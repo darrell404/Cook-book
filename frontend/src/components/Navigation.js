@@ -1,4 +1,4 @@
-import { Button, Dropdown } from "react-bootstrap"
+import { Button, Dropdown, Navbar, Container, Nav, NavDropdown, DropdownButton } from "react-bootstrap"
 import { useLocation, useNavigate } from "react-router-dom"
 
 function Navigation(props) {
@@ -10,40 +10,33 @@ function Navigation(props) {
     }
 }
 
-    const location = useLocation(); 
+  const location = useLocation(); 
 
-    const logOut = async () => {
-      const loggingOut = await fetch('/logout', options).then(response => response.json()).catch((err) => console.log(err))
-      props.clearLocalStorage()
-      navigate('/account/login')
-    }
-
-    return (
-    <div className="nav navbar navbar-dark bg-dark border-bottom w-100 shadow-sm position-fixed">
-      <div className="navbar-container w-100 d-flex justify-content-between px-3">
-          <a href='/' className="nav-link">
-            <h3 className="logo-title text-warning">Cook Book</h3>
-          </a>
-        { props.loggedIn === "true" ? 
-        <div className="d-flex justify-content-between">
-          <a href='/account/favourites' className="nav-link mt-2">
-            <h5 className="text-warning">Favourites</h5>
-          </a>
-          <Dropdown className="my-auto">
-            <Dropdown.Toggle variant="warning" className="my-auto">{`Welcome, ${props.userData}`}</Dropdown.Toggle>
-            <Dropdown.Menu>
-              <Dropdown.Item>Settings</Dropdown.Item>
-              <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
-            </Dropdown.Menu>
-          </Dropdown>
-          </div>
-            : (location.pathname !== '/account/login') ? 
-            <Button href="/account/login" variant="warning" className="h-25 my-auto">Login</Button> :
-            <></>
-        }
-      </div>
-    </div>
-    )
+  const logOut = async () => {
+    const loggingOut = await fetch('/logout', options).then(response => response.json()).catch((err) => console.log(err))
+    props.clearLocalStorage()
+    navigate('/account/login')
   }
+  
+return (
+  <Navbar collapseOnSelect className="px-3 py-4" expand="md" bg="dark" variant="dark">
+    <Navbar.Brand className="text-warning px-3 me-auto" href="/"><h3>Cook Book</h3></Navbar.Brand>
+    <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+    <Navbar.Collapse id="responsive-navbar-nav">
+    { props.loggedIn === "true" ? 
+    <Nav className="ms-auto text-center">
+      <Nav.Link className="text-warning" href="/account/favourites">Favourites</Nav.Link>
+      <DropdownButton id="collasible-nav-dropdown" variant="warning" className="" title={`Welcome, ${props.userData}`}>
+        <Dropdown.Item href="#">Settings</Dropdown.Item>
+        <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
+      </DropdownButton>
+    </Nav> :
+    <Nav className="ms-auto text-sm-right pt-3">
+      <Button href="/account/login" variant="warning">Login</Button>
+    </Nav> }
+    </Navbar.Collapse>
+  </Navbar>
+  )
+}
 
   export default Navigation

@@ -1,5 +1,5 @@
-import { Button, Dropdown, Navbar, Container, Nav, NavDropdown, DropdownButton } from "react-bootstrap"
-import { useLocation, useNavigate } from "react-router-dom"
+import { Button, Dropdown, Navbar, Nav, DropdownButton } from "react-bootstrap"
+import { useLocation, useNavigate, Link } from "react-router-dom"
 
 function Navigation(props) {
   const navigate = useNavigate();
@@ -25,14 +25,14 @@ return (
     <Navbar.Collapse id="responsive-navbar-nav">
     { props.loggedIn === "true" ? 
     <Nav className="ms-auto text-center">
-      <Nav.Link className="text-warning" href="/account/favourites">Favourites</Nav.Link>
+      <Link to="/account/favourites" className="text-warning mx-4 my-2 text-decoration-none">Favourites</Link>
       <DropdownButton id="collasible-nav-dropdown" variant="warning" className="" title={`Welcome, ${props.userData}`}>
-        <Dropdown.Item href="#">Settings</Dropdown.Item>
+        <Dropdown.Item>Settings</Dropdown.Item>
         <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
       </DropdownButton>
     </Nav> :
     <Nav className="ms-auto text-sm-right pt-3">
-      <Button href="/account/login" variant="warning">Login</Button>
+      <Button variant="warning"><Link to='/account/login' className="link-dark text-decoration-none">Login</Link></Button>
     </Nav> }
     </Navbar.Collapse>
   </Navbar>

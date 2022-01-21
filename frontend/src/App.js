@@ -4,7 +4,7 @@ import  { Main } from './components/Main'
 import RecipePage from './components/RecipePage';
 import FavouritePage from './components/FavouritePage'
 import { Fragment, useState, useEffect } from 'react';
-import {HashRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
 import Login from './components/Login';
 import Register from './components/Register';
 import Navigation from './components/Navigation';
@@ -94,7 +94,7 @@ function App() {
 
   return (
     <div className='w-100 h-100 p-0'>
-    <Router basname={process.env.PUBLIC_URL}>
+    <Router>
        <Fragment>
         <Navigation loggedIn={loggedIn} userData={userData} expiry={expiry} clearLocalStorage={clearLocalStorage}/>
         <Routes>

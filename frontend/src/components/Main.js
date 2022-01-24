@@ -98,7 +98,7 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
         {ref.current !== '' && <Filter food={fetchedFood} changeFilter={props.changeFilter} updateFilter={props.updateFilter}/>}
         <div className="container justify-content-center">
           <div className="d-flex flex flex-wrap mx-auto justify-content-center">
-          {fetchedFood && fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food} updateFavourites={props.updateFavourites} favourites={props.favourites}/>)}
+          {fetchedFood && (fetchedFood.length == 0 ? <div className="pt-5"> No recipes found </div> : fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food} updateFavourites={props.updateFavourites} favourites={props.favourites}/>))}
           </div>
         </div>
       </div>

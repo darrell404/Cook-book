@@ -6,6 +6,7 @@ import { useState, useRef, forwardRef, useEffect } from 'react'
 import {useLocation, Link, useNavigate} from 'react-router-dom'
 import axios from 'axios'
 import { Card } from 'react-bootstrap'
+import Loading from './Loading'
  
 const cuisines = ["All","African","American","British","Cajun","Caribbean","Chinese","Eastern European","European","French","German","Greek","Indian","Irish","Italian","Japanese","Jewish","Korean","Latin American","Mediterranean","Mexican","Middle Eastern","Nordic","Southern","Spanish","Thai","Vietnamese"]
 const mealTypes = ["All","Main course","Side dish","Dessert","Appetizer","Salad","Bread","Breakfast","Soup","Beverage","Sauce","Marinade","Fingerfood","Snack","Drink"]
@@ -94,7 +95,7 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
     <div className="mx-auto recipe-list-container justify-content-center">
       {ref.current !== '' && <div className="w-75 m-auto pl-5"><h5 className="showresult">Showing results for {ref.current}...</h5></div>}
       <div className="mx-auto justify-content-center align-items-center w-75">
-        {fetchedFood && fetchedFood.length !== 0 && <Filter food={fetchedFood} changeFilter={props.changeFilter} updateFilter={props.updateFilter}/>}
+        {ref.current !== '' && <Filter food={fetchedFood} changeFilter={props.changeFilter} updateFilter={props.updateFilter}/>}
         <div className="container justify-content-center">
           <div className="d-flex flex flex-wrap mx-auto justify-content-center">
           {fetchedFood && fetchedFood.map(food => <RecipeBox key={food.id} foodInfo={food} updateFavourites={props.updateFavourites} favourites={props.favourites}/>)}
@@ -154,15 +155,5 @@ function RecipeBox(props) {
           <span className="d-flex justify-content-center"><img className="favourite-icon m-4" onClick={() => props.updateFavourites(props.foodInfo.id)} src={favouriteIcon ? addedToFavourite : setToFavourite} alt="Favourite" /></span>
         </Card.Text>
       </Card>
-  )
-}
-
-
-function LoadingPage() {
-  return (
-    <div>
-      <div>Loading page...</div>
-      <div className="loader"></div>
-  </div>
   )
 }

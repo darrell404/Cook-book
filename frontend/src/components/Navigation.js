@@ -32,7 +32,7 @@ return (
       </DropdownButton>
     </Nav> :
     <Nav className="ms-auto text-sm-right pt-3">
-      <Button variant="warning"><Link to='/account/login' className="link-dark text-decoration-none">Login</Link></Button>
+      <Button variant="warning" onClick={() => {navigate('/account/login')}}>Login</Button>
     </Nav> }
     </Navbar.Collapse>
   </Navbar>

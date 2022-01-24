@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import favouriteIcon from '../Assets/Favourite.svg'
 import noImage from '../Assets/no-image.jpg'
+import Loading from './Loading'
 
 function FavouritePage(props) {
 
     const [favouriteArray, setMyFavouriteArray] = useState([])
     const [myFavourites, setMyFavourites] = useState()
     const [deleteEntry, setDeleteEntry] = useState(false)
+    const [noRecipe, setNoRecipe] = useState(false)
 
     useEffect(() => {
          const fetchFavouriteArray = async() => {
@@ -19,6 +21,7 @@ function FavouritePage(props) {
     }, [])
 
     useEffect(() => {
+        timer()
         if (favouriteArray !== 0) {
             if(deleteEntry == true) {
                 props.updateDB(favouriteArray)
@@ -38,6 +41,14 @@ function FavouritePage(props) {
                 fetchFavouritesFromAPI()
         }
     }, [favouriteArray])
+
+    const timer = () => {
+        setTimeout(() => {
+            if (!myFavourites) {
+                setNoRecipe(true)
+            }
+        }, 3000)
+    }
 
     const removeFavourite = (favouriteID) => {
         setDeleteEntry(true)
@@ -71,7 +82,8 @@ function FavouritePage(props) {
     else return (
         <div id="favourites-container" className="mx-auto w-75 text-center">
             <h3 className="text-center">My Favourites</h3>
-            No items in your Favourites
+            {!noRecipe && <Loading />}
+            {noRecipe && <p >No items in your Favourites </p>}
         </div>
     )
 }

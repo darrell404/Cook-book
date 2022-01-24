@@ -40,7 +40,11 @@ router.route('/info/:recipeID').get(async (req,res) => {
     }
 
     try {
-        const fetchRecipe = await axios(options).then(res => console.log(res.data)).catch((error) => {console.log(error)})
+        const fetchRecipe = await axios(options)
+                            .then(res => console.log(res.data))
+                                .catch((error) => {
+                                    console.log(error)
+                                })
         const getRecipeFromDB = await Recipe.find({recipeID: req.params.recipeID}).then((dataReceived => {
             if (dataReceived.length !== 0) {
                 res.send(dataReceived[0])

@@ -12,7 +12,7 @@ import Navigation from './components/Navigation';
 function App() {
   const [searchRecipe, setSearchRecipe] = useState('')
   const [showFood, setShowFood] = useState({})
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
   const [loggedIn, setLoggedIn] = useState(window.localStorage.getItem('loggedIn') || false)
   const [userData, setUserData] = useState(window.localStorage.getItem('user') || null)
   const [expiry, setExpiry] = useState(window.localStorage.getItem('expiry') || null)
@@ -98,7 +98,7 @@ function App() {
        <Fragment>
         <Navigation loggedIn={loggedIn} userData={userData} expiry={expiry} clearLocalStorage={clearLocalStorage}/>
         <Routes>
-          <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood} loggedIn={loggedIn} favourites={favourites} updateFavouriteState={updateFavouriteState} fetchFavouriteState={fetchFavouriteState}/>} />
+          <Route exact path='/' element={<Main showFood={showFood} searchRecipe={searchRecipe} handleChange={handleChange} updateShowFood={updateShowFood} loggedIn={loggedIn} favourites={favourites} updateFavouriteState={updateFavouriteState} fetchFavouriteState={fetchFavouriteState} loading={loading} setLoading={setLoading}/>} />
           <Route path='/recipe/:id' element={<RecipePage/>} />
           <Route path='/account/favourites' element={loggedIn ? <FavouritePage updateDB={updateDB} /> : <Navigate to='/account/login' />} />
           <Route exact path='/account/login' element={loggedIn ? <Navigate to='/'/> : <Login setLocalStorage={setLocalStorage}/>} />

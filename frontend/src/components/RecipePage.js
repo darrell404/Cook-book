@@ -2,19 +2,30 @@ import '../css/addon.css'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import { ListGroup, Row, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
+import Loading from './Loading';
 
 function RecipePage(props) {
     const [metric, setMetric] = useState("us")
-    const [recipeData, setRecipeData] = useState(null)
+    const [recipeData, setRecipeData] = useState()
+    const [noRecipe, setNoRecipe] = useState(false)
     var { id } = useParams();
     const getRecipeData = async () => await fetch(`/recipes/info/${id}`).then(response => response.json()).then(data => setRecipeData(data))
 
     useEffect(() => {
+        timer()
         getRecipeData()
     }, [])
 
     const changeMetric = (val) => {
         setMetric(val)
+    }
+
+    const timer = () => {
+        setTimeout(() => {
+            if(!recipeData) {
+                setNoRecipe(true)
+            }
+        }, 3000)
     }
 
     function addSummary() {
@@ -24,11 +35,11 @@ function RecipePage(props) {
         }
     }
 
-    if (recipeData !== null)
+    if (recipeData)
     return(
         <div>
-            <div className="recipe-container">
-                <div className='container w-80'>
+            <div className="recipe-container pb-5">
+                <div className='container'>
                     <h2 className="my-5 text-center"><b className="border-bottom border-warning border-3">{recipeData.title.toUpperCase()}</b></h2>
                     <p className="text-center"><b className="text-warning">Servings:</b> {recipeData.servings} <b className="text-warning">Cooking Time:</b> {recipeData.readyInMinutes} minutes</p>
                     <Row className="mb-5">
@@ -51,7 +62,9 @@ function RecipePage(props) {
                             <Tab eventKey="recipe" title="Recipe">
                                 <div className='pl-5 mt-4'>
                                     <ol>
-                                    {recipeData.analyzedInstructions[0].steps.map((e,index) => <li key={index}>{e.step}</li>)}
+                                    {recipeData.analyzedInstructions.length !== 0 ? recipeData.analyzedInstructions[0].steps.map((e,index) => <li key={index}>{e.step}</li>) :
+                                        <p>No recipe available for this item</p>
+                                    }
                                     </ol>
                                 </div>
                             </Tab>
@@ -64,7 +77,8 @@ function RecipePage(props) {
 
     else return(
         <div>
-            <h1>No data has been found!</h1>
+            {!noRecipe && <Loading />}
+            {noRecipe && <h1 className="text-center pt-5">Recipe not found</h1>}
         </div>
     )
 }

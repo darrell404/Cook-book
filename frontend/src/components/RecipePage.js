@@ -29,7 +29,7 @@ function RecipePage(props) {
     }
 
     function addSummary() {
-        let recipeSummary = recipeData.summary.split('.').slice(0, 2);
+        let recipeSummary = `${recipeData.summary.split('.').slice(0, 2)}.`;
         return {
             __html: recipeSummary
         }

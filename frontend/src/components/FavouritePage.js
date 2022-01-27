@@ -23,7 +23,7 @@ function FavouritePage(props) {
     useEffect(() => {
         timer()
         if (favouriteArray !== 0) {
-            if(deleteEntry == true) {
+            if(deleteEntry === true) {
                 props.updateDB(favouriteArray)
                 setDeleteEntry(false)
             }

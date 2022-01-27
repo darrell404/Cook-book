@@ -75,7 +75,7 @@ export function Main(props) {
   }
 
   const updateFilter = () => {
-    if (JSON.stringify(previousFilter) == JSON.stringify(chosenFilter)) {
+    if (JSON.stringify(previousFilter) === JSON.stringify(chosenFilter)) {
       return
     }
     fetchRecipes()
@@ -93,8 +93,9 @@ export function Main(props) {
   useEffect(() => {
     if(Object.keys(props.showFood).length !== 0) {
         setPages(Math.ceil(props.showFood.results.length/itemsOnPage))
+        setActivePage(1)
       }
-  }, [props.showFood])
+  }, [props.showFood, itemsOnPage])
 
   return (
     <div className="w-100 h-100">
@@ -125,7 +126,7 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
           <div className="d-flex flex flex-wrap mx-auto justify-content-center">
             {props.loading ? <Loading />
             :
-            fetchedFood && (fetchedFood.length == 0 ? <div className="pt-5"> No recipes found </div> : 
+            fetchedFood && (fetchedFood.length === 0 ? <div className="pt-5"> No recipes found </div> : 
             fetchedFood.slice((props.itemsOnPage * (props.activePage - 1)), (props.itemsOnPage * props.activePage)).map(food => <RecipeBox key={food.id} foodInfo={food} updateFavourites={props.updateFavourites} favourites={props.favourites}/>)
             )}
           </div>
@@ -167,7 +168,7 @@ function Filter(props) {
 function ShowItems(props) {
   return (
     <div className="container d-flex mt-3 justify-content-end">
-      <h6 className="mx-3 mb-0">Show</h6>
+      <h6 className="mx-3 mb-0">View</h6>
       <select className="" id="show-items" name="showItems" onChange={props.changeCount}>
           {numberOfItems.map((items, index) => <option key={index}>{items}</option>)}
       </select>

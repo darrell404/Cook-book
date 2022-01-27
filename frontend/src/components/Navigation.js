@@ -1,5 +1,5 @@
 import { Button, Dropdown, Navbar, Nav, DropdownButton } from "react-bootstrap"
-import { useLocation, useNavigate, Link } from "react-router-dom"
+import { useNavigate, Link } from "react-router-dom"
 
 function Navigation(props) {
   const navigate = useNavigate();
@@ -9,8 +9,6 @@ function Navigation(props) {
         'Content-Type': 'application/json'
     }
 }
-
-  const location = useLocation(); 
 
   const logOut = async () => {
     const loggingOut = await fetch('/logout', options).then(response => response.json()).catch((err) => console.log(err))

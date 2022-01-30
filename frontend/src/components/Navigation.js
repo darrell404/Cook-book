@@ -25,7 +25,6 @@ return (
     <Nav className="ms-auto text-center">
       <Link to="/account/favourites" className="text-warning mx-4 my-2 text-decoration-none">Favourites</Link>
       <DropdownButton id="collasible-nav-dropdown" variant="warning" className="" title={`Welcome, ${props.userData}`}>
-        <Dropdown.Item>Settings</Dropdown.Item>
         <Dropdown.Item onClick={logOut}>Logout</Dropdown.Item>
       </DropdownButton>
     </Nav> :

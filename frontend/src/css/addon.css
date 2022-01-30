@@ -111,6 +111,12 @@
   padding-top: var(--padding-from-nav);
 }
 
+/* Page Not Found CSS */
+
+#page-not-found-container {
+  padding-top: var(--padding-from-nav)
+}
+
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

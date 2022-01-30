@@ -1,5 +1,4 @@
 import { Link, useNavigate } from 'react-router-dom'
-import '../App'
 import '../css/addon.css'
 import { useState } from 'react'
 import { Alert } from 'react-bootstrap'

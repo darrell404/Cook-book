@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-do
 import Login from './components/Login';
 import Register from './components/Register';
 import Navigation from './components/Navigation';
+import PageNotFound from './components/PageNotFound';
 
 function App() {
   const [searchRecipe, setSearchRecipe] = useState('')
@@ -49,6 +50,7 @@ function App() {
     setShowFood(data)
   }
 
+  // Updates your favourites to DB
   const updateDB = async(fav) => {
     const options = {
       method: 'POST',
@@ -60,6 +62,7 @@ function App() {
     const updateFavouriteOnDB = await fetch('/favourites/add', options).then(res => res.json()).then(data => data)
   }
 
+  // Updates the favourites in state
   const updateFavouriteState = (foodID) => {
     const options = {
       method: 'POST',
@@ -86,6 +89,7 @@ function App() {
     }
   }
 
+  // Fetch all favourites in DB
   const fetchFavouriteState = async (event) => {
     if (event) event.preventDefault();
     const getAllFavourites = await fetch('/favourites').then(res => res.json()).then(data => data.favourites)
@@ -93,7 +97,7 @@ function App() {
   }
 
   return (
-    <div className='w-100 h-100 p-0'>
+    <div className='p-0'>
     <Router>
        <Fragment>
         <Navigation loggedIn={loggedIn} userData={userData} expiry={expiry} clearLocalStorage={clearLocalStorage}/>
@@ -103,6 +107,7 @@ function App() {
           <Route path='/account/favourites' element={loggedIn ? <FavouritePage updateDB={updateDB} /> : <Navigate to='/account/login' />} />
           <Route exact path='/account/login' element={loggedIn ? <Navigate to='/'/> : <Login setLocalStorage={setLocalStorage}/>} />
           <Route exact path='/account/register' element={loggedIn ? <Navigate to='/'/> : <Register/>}/>
+          <Route path="*" element={<PageNotFound/>}/>
         </Routes>
        </Fragment>
     </Router>

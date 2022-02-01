@@ -9,7 +9,7 @@ function RecipePage(props) {
     const [recipeData, setRecipeData] = useState()
     const [noRecipe, setNoRecipe] = useState(false)
     var { id } = useParams();
-    const getRecipeData = async () => await fetch(`/recipes/info/${id}`).then(response => response.json()).then(data => setRecipeData(data))
+    const getRecipeData = async () => await fetch(`/api/recipes/info/${id}`).then(response => response.json()).then(data => setRecipeData(data))
 
     useEffect(() => {
         timer()

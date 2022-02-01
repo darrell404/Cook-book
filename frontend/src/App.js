@@ -59,7 +59,7 @@ function App() {
       },
       body: JSON.stringify({"favourites": fav})
     }
-    const updateFavouriteOnDB = await fetch('/favourites/add', options).then(res => res.json()).then(data => data)
+    const updateFavouriteOnDB = await fetch('/api/favourites/add', options).then(res => res.json()).then(data => data)
   }
 
   // Updates the favourites in state
@@ -72,7 +72,7 @@ function App() {
       body: JSON.stringify({"foodID": foodID})
     }
     const checkFavouriteIfExists = async() => {
-      const getFavourite = await fetch('/recipes/searchSingleRecipe', options).then(res => (res))
+      const getFavourite = await fetch('/api/recipes/searchSingleRecipe', options).then(res => (res))
     }
 
     checkFavouriteIfExists()
@@ -92,7 +92,7 @@ function App() {
   // Fetch all favourites in DB
   const fetchFavouriteState = async (event) => {
     if (event) event.preventDefault();
-    const getAllFavourites = await fetch('/favourites').then(res => res.json()).then(data => data.favourites)
+    const getAllFavourites = await fetch('/api/favourites').then(res => res.json()).then(data => data.favourites)
     setFavourites(getAllFavourites)
   }
 

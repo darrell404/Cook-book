@@ -32,7 +32,7 @@ function Register() {
             },
             body: JSON.stringify({"firstName": firstName.value, "lastName": lastName.value, email, password})
         }
-        const sendData = await fetch('/register', options).then(response => response.json())
+        const sendData = await fetch('/api/register', options).then(response => response.json())
         if(sendData.success) {
             setDisableButton(true)
             setMessage(sendData)

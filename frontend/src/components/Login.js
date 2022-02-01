@@ -24,7 +24,7 @@ function Login(props) {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        const LoggingIn = await fetch('/login', options).then(response => response.json())
+        const LoggingIn = await fetch('/api/login', options).then(response => response.json())
             .then(data => { 
                  if (data.error) {
                      setMessage(data)

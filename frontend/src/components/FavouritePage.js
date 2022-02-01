@@ -14,7 +14,7 @@ function FavouritePage(props) {
 
     useEffect(() => {
          const fetchFavouriteArray = async() => {
-            const getAllFavourites = await fetch('/favourites').then(res => res.json()).then(data => data.favourites)
+            const getAllFavourites = await fetch('/api/favourites').then(res => res.json()).then(data => data.favourites)
             setMyFavouriteArray(getAllFavourites)
         }
         fetchFavouriteArray()
@@ -35,7 +35,7 @@ function FavouritePage(props) {
                     },
                     body: JSON.stringify({"favourites" : favouriteArray })
                 }
-                const fetchFromAPI = await fetch('/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
+                const fetchFromAPI = await fetch('/api/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
                 setMyFavourites(fetchFromAPI)
             }
                 fetchFavouritesFromAPI()

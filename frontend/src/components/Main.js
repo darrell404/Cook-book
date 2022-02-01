@@ -32,7 +32,7 @@ export function Main(props) {
   var searchedRecipeRef = useRef('')
 
   const fetchRecipes = async () => {
-        await axios(`/recipes/search/${props.searchRecipe}&instructionsRequired=true&cuisine=${chosenFilter.Cuisine}&type=${chosenFilter.MealType}&number=30`).then(response => storeShowFood(response.data))
+        await axios(`/api/recipes/search/${props.searchRecipe}&instructionsRequired=true&cuisine=${chosenFilter.Cuisine}&type=${chosenFilter.MealType}&number=30`).then(response => storeShowFood(response.data))
         setLoading(false)
       }
 

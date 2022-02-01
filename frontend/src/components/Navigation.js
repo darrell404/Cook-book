@@ -11,7 +11,7 @@ function Navigation(props) {
 }
 
   const logOut = async () => {
-    const loggingOut = await fetch('/logout', options).then(response => response.json()).catch((err) => console.log(err))
+    const loggingOut = await fetch('/api/logout', options).then(response => response.json()).catch((err) => console.log(err))
     props.clearLocalStorage()
     navigate('/account/login')
   }

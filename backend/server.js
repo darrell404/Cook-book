@@ -12,6 +12,7 @@ const session = require("express-session")
 const MongoDBSession = require("connect-mongodb-session")(session)
 const cookieParser = require("cookie-parser")
 const dbURL = process.env.DB_URL
+const router = express.Router()
 
 // Mongoose Connection
 
@@ -45,23 +46,21 @@ app.use(session({
     }
 })) 
 
-app.get('/', (req, res) => {
-    res.send("This is the root location!")
-})
+app.use('/api', router)
 
 // Routes
 
-app.use('/recipes', recipeRoute)
+router.use('/recipes', recipeRoute)
 
-app.use('/login', LoginRoute)
+router.use('/login', LoginRoute)
 
-app.use('/register', RegisterRoute)
+router.use('/register', RegisterRoute)
 
-app.use('/logout', LogoutRoute)
+router.use('/logout', LogoutRoute)
 
-app.use('/favourites', FavouritesRoute)
+router.use('/favourites', FavouritesRoute)
 
-app.use('/users', UsersRoute)
+router.use('/users', UsersRoute)
 
 app.listen(5000, () => {
     console.log("Server is now running!")

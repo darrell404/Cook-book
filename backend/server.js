@@ -13,6 +13,7 @@ const MongoDBSession = require("connect-mongodb-session")(session)
 const cookieParser = require("cookie-parser")
 const dbURL = process.env.DB_URL
 const router = express.Router()
+const path = require("path")
 
 // Mongoose Connection
 
@@ -27,6 +28,7 @@ const store = new MongoDBSession({
 })
 
 // Start of Express config
+app.use('/', express.static('../frontend/build'))
 
 app.use(cors({
     origin: ["http://localhost:3000"],
@@ -61,6 +63,10 @@ router.use('/logout', LogoutRoute)
 router.use('/favourites', FavouritesRoute)
 
 router.use('/users', UsersRoute)
+
+app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "../frontend/build", "index.html"));
+    });
 
 app.listen(5000, () => {
     console.log("Server is now running!")

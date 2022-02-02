@@ -36,7 +36,7 @@ function FavouritePage(props) {
                     body: JSON.stringify({"favourites" : favouriteArray })
                 }
                 const fetchFromAPI = await fetch('/api/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
-                setMyFavourites(fetchFromAPI)
+                setMyFavourites(fetchFromAPI)   
             }
                 fetchFavouritesFromAPI()
         }
@@ -47,7 +47,7 @@ function FavouritePage(props) {
             if (!myFavourites) {
                 setNoRecipe(true)
             }
-        }, 3000)
+        }, 2000)
     }
 
     const removeFavourite = (favouriteID) => {

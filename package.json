@@ -6,7 +6,7 @@
   "author": "darrell404 <darrell029@gmail.com>",
   "scripts": {
     "frontend": "cd ./frontend/ && yarn start",
-    "backend": "cd ./backend && yarn serve",
+    "backend": "cd ./backend && yarn server",
     "dev": "concurrently \"npm run frontend\" \"npm run backend\""
   },
   "license": "MIT",

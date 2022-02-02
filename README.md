@@ -1,0 +1,11 @@
+# Cook-book
+### A full stack App for searching recipes using the following:
+1. MongoDB
+2. Express
+3. React
+4. NodeJS
+
+Client and Server dockerized and hosted on **AWS EC2** behind an **Nginx reverse proxy** \
+MongoDB hosted on **MongoDB Atlas**
+
+---

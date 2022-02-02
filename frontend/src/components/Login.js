@@ -53,9 +53,6 @@ function Login(props) {
     return (
         <div className="w-100 h-100 p-0">
             <div id="login-container" className="d-flex flex-column w-100 h-100 justify-content-center align-self-center align-items-center">
-                {showMessage && <Alert className="alert-message w-50 text-center mx-auto position-absolute start-50 translate-middle-x" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
-                    <Alert.Heading>{message.error}</Alert.Heading>
-                </Alert>}
                 <h3 className="text-center mb-5">Login</h3>
                 <form id="login-form" className="container my-0 align-items-center text-center" onSubmit={handleSubmit}>
                     <div className='col-xl-6 col-lg-6 col-md-8 m-auto'><input type="email" id="email" className="text-input border-secondary mb-1 border-2 form-control" name="email" onChange={handleChange} placeholder="Email address" required></input></div>
@@ -63,6 +60,9 @@ function Login(props) {
                     <input id="submit" className="m-4 btn-sm btn-warning" type="submit" value="Login" />
                     <p>If you do not have an account yet, click <Link to='/account/register'> here </Link> to register</p>
                 </form>
+                {showMessage && <Alert className="alert-message w-75 text-center mx-auto" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
+                    <Alert.Heading>{message.error}</Alert.Heading>
+                </Alert>}
             </div>
         </div>
     )

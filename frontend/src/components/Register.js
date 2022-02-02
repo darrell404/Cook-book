@@ -73,21 +73,6 @@ function Register() {
     return (
         <div className="w-100 my-auto p-0">
             <div id="login-container" className="position-relative d-flex flex-column text-center justify-content-center w-100 h-100">
-                {showMessage && 
-                message.error ?
-                    <Alert className="alert-message w-50 mx-auto position-absolute start-50 translate-middle-x" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
-                        <Alert.Heading>{message.error}</Alert.Heading>
-                    </Alert> : 
-                message.success ?
-                    <Alert className="alert-message w-50 mx-auto position-absolute start-50 translate-middle-x" variant='success' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
-                        <Alert.Heading>{message.success}</Alert.Heading>
-                        <p>Redirecting to the Login page</p>
-                    </Alert> : <></>
-                }
-                {passwordMatch === false &&
-                    <Alert className="alert-message w-50 mx-auto position-absolute start-50 translate-middle-x" variant='danger' dismissible>
-                        <Alert.Heading>{"Passwords do not match"}</Alert.Heading>
-                    </Alert>}
                 <h3>Register</h3>
                     <form id="login-form" className="container my-0 align-items-center text-center" onSubmit={handleSubmit}>
                         <div className='col-xl-6 col-lg-6 m-auto'><input type="text" id="name" className="text-input border-secondary mb-1 border-2 form-control" name="firstName" placeholder="First Name" required/></div>
@@ -97,6 +82,21 @@ function Register() {
                         <div className='col-xl-6 col-lg-6 m-auto'><input type="password" autoComplete="new-password" id="re-password" className="text-input border-secondary mt-1 border-2 form-control"  placeholder="Confirm Password" required onChange={getConfirmPassword}></input></div>
                         <div className='col-xl-6 col-lg-6 m-auto'><input id="submit" disabled={disableButton} className="m-4 btn-sm btn-warning" type="submit" value="Create Account" /></div>
                     </form>
+                    {showMessage && 
+                message.error ?
+                    <Alert className="alert-message w-75 mx-auto" variant='danger' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
+                        <Alert.Heading>{message.error}</Alert.Heading>
+                    </Alert> : 
+                message.success ?
+                    <Alert className="alert-message w-75 mx-auto" variant='success' onClose={() => {setShowMessage(false); setMessage({})}} dismissible>
+                        <Alert.Heading>{message.success}</Alert.Heading>
+                        <p>Redirecting to the Login page</p>
+                    </Alert> : <></>
+                }
+                 {passwordMatch === false &&
+                    <Alert className="alert-message w-75 mx-auto" variant='danger' dismissible>
+                        <Alert.Heading>{"Passwords do not match"}</Alert.Heading>
+                    </Alert>}
             </div>
         </div>
     )

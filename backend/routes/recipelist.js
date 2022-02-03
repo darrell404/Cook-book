@@ -32,8 +32,8 @@ router.route('/search/:recipename').get(async (req,res) => {
 router.route('/info/:recipeID').get(async (req,res) => {
     const baseURL = 'http://localhost:5000'
     const options = {
-        method: 'post',
-        url: baseURL + '/recipes/searchSingleRecipe',
+        method: 'POST',
+        url: baseURL + '/api/recipes/searchSingleRecipe',
         data: {
             foodID: req.params.recipeID
         }
@@ -41,7 +41,7 @@ router.route('/info/:recipeID').get(async (req,res) => {
 
     try {
         const fetchRecipe = await axios(options)
-                            .then(res => console.log(res.data))
+                            .then(response => console.log(response.data))
                                 .catch((error) => {
                                     console.log(error)
                                 })

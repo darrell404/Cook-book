@@ -111,6 +111,19 @@
   padding-top: var(--padding-from-nav);
 }
 
+/* Recipe Page */
+.tab-pane > li > button, .tab-pane > li > button:hover {
+  background-color: white;
+  color: black;
+  font-weight: bolder;
+}
+
+.tab-pane > li > button.active {
+  background-color: black !important;
+  color: #f0ad4e !important;
+}
+
+
 /* Page Not Found CSS */
 
 #page-not-found-container {

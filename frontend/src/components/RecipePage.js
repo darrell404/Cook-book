@@ -5,7 +5,7 @@ import { ListGroup, Row, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } fro
 import Loading from './Loading';
 
 function RecipePage(props) {
-    const [metric, setMetric] = useState("us")
+    const [metric, setMetric] = useState("metric")
     const [recipeData, setRecipeData] = useState()
     const [noRecipe, setNoRecipe] = useState(false)
     var { id } = useParams();
@@ -25,7 +25,7 @@ function RecipePage(props) {
             if(!recipeData) {
                 setNoRecipe(true)
             }
-        }, 3000)
+        }, 2000)
     }
 
     function addSummary() {
@@ -47,13 +47,13 @@ function RecipePage(props) {
                     </Row>
                     <p className='w-50 m-auto text-center pb-5' dangerouslySetInnerHTML={addSummary()}/>
                     <div className="tab-container p-3 border border-warning border-3">
-                        <Tabs defaultActiveKey="ingredients" id="controlled-tab-example">
+                        <Tabs variant="pills" className="tab-pane" defaultActiveKey="ingredients" id="controlled-tab-example">
                             <Tab className="tab" eventKey="ingredients" title="Ingredients">
                                 <div className='pl-5 mt-3'>
-                                <p>Units</p>
+                                <h5 className="py-2">Units</h5>
                                 <ToggleButtonGroup name="units" type="radio" defaultValue={metric} onChange={changeMetric}>
-                                    <ToggleButton variant="warning" className="text-dark" id="us" value={"us"}><b>US</b></ToggleButton>
-                                    <ToggleButton variant="warning" className="text-dark" id="metric" value={"metric"}><strong>METRIC</strong></ToggleButton>
+                                    <ToggleButton variant="outline-warning" className="text-dark" id="metric" value={"metric"}><strong>METRIC</strong></ToggleButton>
+                                    <ToggleButton variant="outline-warning" className="text-dark" id="us" value={"us"}><b>US</b></ToggleButton>
                                 </ToggleButtonGroup>
                                 <p className='pl-5 mt-3'>The ingredients for this recipe are as follows:</p>
                                 <Ingredients recipeData={recipeData} metric={metric}/>
@@ -89,7 +89,7 @@ function Ingredients(props) {
         <div>
             {props.recipeData.extendedIngredients.map((data, id) =>
                 <ListGroup key={id}>
-                    <ListGroup.Item className="ingredient">
+                    <ListGroup.Item className="ingredient border-0">
                         {`${(data.measures.us.amount === 0.5) ? '1/2' : data.measures.us.amount === 0.25 ? '1/4' : data.measures.us.amount} `} 
                         {`${data.measures.us.unitShort} `}{data.originalName}
                         </ListGroup.Item>
@@ -102,7 +102,7 @@ function Ingredients(props) {
         <div>
             {props.recipeData.extendedIngredients.map((data, id) =>
                 <ListGroup key={id}>
-                    <ListGroup.Item className="ingredient">
+                    <ListGroup.Item className="ingredient border-0">
                     {`${(data.measures.metric.amount === 0.5) ? '1/2' : data.measures.metric.amount === 0.25 ? '1/4' : Math.ceil(data.measures.metric.amount)} `} 
                         {`${data.measures.metric.unitShort} `}{data.originalName}
                         </ListGroup.Item>

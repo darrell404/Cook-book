@@ -1,5 +1,5 @@
 # Get default node docker image
-FROM node:16-alpine3.14
+FROM node:16.13.2
 
 ENV NODE_ENV=production
 
@@ -9,7 +9,7 @@ RUN mkdir backend
 RUN mkdir frontend
 
 COPY ["./backend/package.json", "./backend"]
-COPY ["./frontend/package.json", "./frontend" ]
+COPY ["./frontend/package*.json", "./frontend" ]
 
 WORKDIR /app/frontend
 RUN npm install

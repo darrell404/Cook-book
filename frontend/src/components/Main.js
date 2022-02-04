@@ -10,13 +10,12 @@ import Loading from './Loading'
  
 const cuisines = ["All","African","American","British","Cajun","Caribbean","Chinese","Eastern European","European","French","German","Greek","Indian","Irish","Italian","Japanese","Jewish","Korean","Latin American","Mediterranean","Mexican","Middle Eastern","Nordic","Southern","Spanish","Thai","Vietnamese"]
 const mealTypes = ["All","Main course","Side dish","Dessert","Appetizer","Salad","Bread","Breakfast","Soup","Beverage","Sauce","Marinade","Fingerfood","Snack","Drink"]
-const sort = ["Default","Ascending","Descending"]
+const sortOptions = ["Default","Ascending","Descending"]
 const numberOfItems = [5, 10, "All"]
 
 const filterObject = {
   "Cuisine": cuisines,
-  "MealType": mealTypes,
-  "Sort": sort
+  "MealType": mealTypes
 }
 
 export function Main(props) {
@@ -24,11 +23,12 @@ export function Main(props) {
   const navigate = useNavigate();
 
   const [chosenFilter, setChosenFilter] = useState({"Cuisine": "All", "MealType": "All"})
-  const [previousFilter, setPreviousFilter] = useState()
+  const [previousFilter, setPreviousFilter] = useState({"Cuisine": "All", "MealType": "All"})
   const [loading, setLoading] = useState(false)
   const [itemsOnPage, setItemsOnPage] = useState(5)
   const [pages, setPages] = useState(1)
   const [activePage, setActivePage] = useState(1)
+
   var searchedRecipeRef = useRef('')
 
   const fetchRecipes = async () => {
@@ -39,6 +39,7 @@ export function Main(props) {
   const submit = () => {
     if (props.searchRecipe === '' | props.searchRecipe === undefined) { 
         searchedRecipeRef.current = '';
+        props.updateShowFood({})
         return
       }
     setLoading(true)
@@ -48,6 +49,20 @@ export function Main(props) {
 
   const change = (event) => {
     props.handleChange(event.target.value)
+  }
+
+  const changeSort = (event) => {
+    const sort = event.target.value
+    switch(sort) {
+      case "Ascending":
+        sortRecipe("ascend", props.showFood)
+        break
+      case "Descending":
+        sortRecipe("descend", props.showFood)
+        break
+      default:
+        break
+    } 
   }
 
   const storeShowFood = (data) => {
@@ -82,6 +97,36 @@ export function Main(props) {
     setPreviousFilter(chosenFilter)
   }
 
+  const sortRecipe = (order, data) => {
+    if (order === "ascend") {
+      const newData = data.results.sort((first, second) => {
+        if (first.title < second.title) {
+          return -1
+        } 
+        if (first.title > second.title) {
+          return 1
+        }
+          return 0
+      })
+
+      props.updateShowFood({...props.showFood, results: newData})
+    }
+
+    else if (order === "descend") {
+      const newData = data.results.sort((first, second) => {
+        if (first.title > second.title) {
+          return -1
+        } 
+        if (first.title < second.title) {
+          return 1
+        }
+          return 0
+      })
+      props.updateShowFood({...props.showFood, results: newData})
+    }
+   
+  }
+
   const changeCount = (event) => {
     let numberOfItems = event.target.value
       if(numberOfItems === "All") {
@@ -106,7 +151,7 @@ export function Main(props) {
             <button type="submit" className="search btn-lg bg-warning"><i className="fa fa-search"></i></button>
             </form>
         </div>
-      <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} loading={loading} setLoading={setLoading} ref={searchedRecipeRef} updateFavourites={updateFavourites} updateFilter={updateFilter} favourites={props.favourites} changeFilter={changeFilter} pages={pages} activePage={activePage} setActivePage={setActivePage} itemsOnPage={itemsOnPage} setItemsOnPage={setItemsOnPage} changeCount={changeCount}/>
+      <SearchRecipeContainer showFood={props.showFood} searchRecipe={props.searchRecipe} loading={loading} setLoading={setLoading} ref={searchedRecipeRef} updateFavourites={updateFavourites} updateFilter={updateFilter} favourites={props.favourites} changeFilter={changeFilter} pages={pages} activePage={activePage} setActivePage={setActivePage} itemsOnPage={itemsOnPage} setItemsOnPage={setItemsOnPage} changeCount={changeCount} changeSort={changeSort}/>
     </div>
   );
 }
@@ -119,7 +164,7 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
       <div className="mx-auto justify-content-center align-items-center w-75">
         {ref.current !== '' &&
           <>
-          <Filter food={fetchedFood} changeFilter={props.changeFilter} updateFilter={props.updateFilter}/>
+          <Filter food={fetchedFood} changeFilter={props.changeFilter} updateFilter={props.updateFilter} changeSort={props.changeSort}/>
           <ShowItems changeCount={props.changeCount}/>
           </>}
         <div className="container justify-content-center">
@@ -159,6 +204,12 @@ function Filter(props) {
             {renderDataFilter}
           </div>
           <button className="btn button-search btn-sm bg-warning p-1 mt-4 mx-2" type="submit" onClick={props.updateFilter}>Update</button>
+        </div>
+        <div className="sort-option d-flex flex-column mt-3 mx-2">
+            <label className=''>Sort</label>
+            <select className="mt-3 mb-2 selectpicker" id="sort" name="sort" onChange={props.changeSort}>
+              {sortOptions.map((value) => <option key={value}>{value}</option>)}
+            </select>
         </div>
       </div>
     </div>
@@ -208,7 +259,7 @@ function RecipeBox(props) {
         <Link to={`/recipe/${props.foodInfo.id}`} className="recipe-link" state={{from: 'Main'}}>
           <Card.Img className="recipe-image card-image-top d-block" src={props.foodInfo.image}/>
           <Card.Title className="pt-2" style={{height: "60px"}}>
-            <h5 className="recipe-title text-center">{props.foodInfo.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
+            <h5 className="recipe-title text-center">{props.foodInfo.title.charAt(0).toUpperCase() + props.foodInfo.title.slice(1, props.foodInfo.title.length)}</h5>
           </Card.Title>
         </Link>
         <Card.Text>

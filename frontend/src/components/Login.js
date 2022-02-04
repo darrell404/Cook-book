@@ -31,7 +31,7 @@ function Login(props) {
                      setShowMessage(true)
                  }
                  else if (data.isAuth) {
-                    const expiryEnd = (1000 * 60 * 10)
+                    const expiryEnd = (1000 * 60 * 60)
                     const currentTime = new Date()
                     const expiryTime = new Date(currentTime.getTime() + expiryEnd)
                     storeToLocalStorage(true, data.name, expiryTime.getTime())

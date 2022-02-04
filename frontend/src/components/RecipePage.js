@@ -78,7 +78,16 @@ function RecipePage(props) {
     else return(
         <div>
             {!noRecipe && <Loading />}
-            {noRecipe && <h1 className="text-center pt-5">Recipe not found</h1>}
+            {noRecipe &&
+                <div className="container text-center" id="page-not-found-container">
+                    <h1 className="pt-5 display-1">404</h1>
+                    <h1 className="display-1">Recipe Not Found</h1>
+                    <p>
+                        Sorry, this page does not exist<br/>
+                        Please head back to the main page, and search again
+                    </p>
+                </div>
+            }
         </div>
     )
 }

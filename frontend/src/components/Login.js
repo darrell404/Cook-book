@@ -1,7 +1,9 @@
 import { Link, useNavigate } from 'react-router-dom'
 import '../css/addon.css'
-import { useState } from 'react'
+import { useState, useContext } from 'react'
+import { AppContext } from '../context/Context'
 import { Alert } from 'react-bootstrap'
+import { setLocalStorage } from '../components/utils/Utils'
 
 function Login(props) {
     const navigate = useNavigate()
@@ -9,9 +11,17 @@ function Login(props) {
     const [password, setPassword] = useState(null)
     const [showMessage, setShowMessage] = useState(false)
     const [message, setMessage] = useState({})
+    const {loggedin, userdata, expiresession} = useContext(AppContext)
+    const [loggedIn, setLoggedIn] = loggedin
+    const [userData, setUserData] = userdata
+    const [expiry, setExpiry] = expiresession
+
 
     const storeToLocalStorage = (loggedIn, userData, expiry) => {
-        props.setLocalStorage(loggedIn, userData, expiry)
+        setLocalStorage(loggedIn, userData, expiry)
+        setLoggedIn(window.localStorage.getItem("loggedIn"))
+        setUserData(window.localStorage.getItem("user"))
+        setExpiry(window.localStorage.getItem("expiry"))
     }
 
     const options = {

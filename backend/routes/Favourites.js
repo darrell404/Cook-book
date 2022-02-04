@@ -18,7 +18,8 @@ router.route('/').get(async (req, res) => {
             console.log(err)
         }
     }
-    else return
+    else res.json({"favourites": "empty"})
+    return
 })
 
 router.route('/add').post(async (req, res) => {

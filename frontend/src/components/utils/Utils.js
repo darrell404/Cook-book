@@ -3,7 +3,13 @@ import axios from "axios"
 // Fetches all the Recipes from the API based on search criteria
 
 export const fetchRecipesFromAPI = async (searchRecipe, Cuisine, MealType) => {
-    return await axios(`/api/recipes/search/${searchRecipe}&instructionsRequired=true&cuisine=${Cuisine}&type=${MealType}&number=30`).then(response => (response.data))
+    const foodArray = await axios(`/api/recipes/search/${searchRecipe}&instructionsRequired=true&cuisine=${Cuisine}&type=${MealType}&number=30`).then(response => (response.data))
+    if (foodArray.results) {
+        foodArray.results.forEach(recipe => {
+            recipe.title = recipe.title.charAt(0).toUpperCase() + recipe.title.slice(1)
+        })
+    }
+    return foodArray
   }
 
 // Updates the DB when the used adds/removes a Favourite Recipe 

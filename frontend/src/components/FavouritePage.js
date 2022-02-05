@@ -25,31 +25,30 @@ function FavouritePage() {
         fetchFavouriteArray()
     }, [])
 
-    // Checks if favourite array has been amended, then fetches the data if there is any
+    // When an item has been removed, this will update the Database, also checks if there is no recipe on mount
 
     useEffect(() => {
         if (favouriteArrayIsFetched.current)
             {
-                if (favouriteArray.length !== 0) {
-                    if(deleteEntry === true) {
-                        updateDB(favouriteArray)
-                        setDeleteEntry(false)
-                    }
-                    const fetchFavouritesFromAPI = async() => {
-                        const options = {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify({"favourites" : favouriteArray })
-                        }
-                        const fetchFromAPI = await fetch('/api/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
-                        setMyFavourites(fetchFromAPI)   
-                    }
-                        fetchFavouritesFromAPI()
-                        setLoadPage(false)
+                if(deleteEntry === true) {
+                    updateDB(favouriteArray)
+                    setDeleteEntry(false)
                 }
-                else {
+                const fetchFavouritesFromAPI = async() => {
+                    const options = {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({"favourites" : favouriteArray })
+                    }
+                    const fetchFromAPI = await fetch('/api/recipes/searchRecipes', options).then(res => res.json()).then(data => (data.favouriteArray))
+                    setMyFavourites(fetchFromAPI)   
+                }
+                    fetchFavouritesFromAPI()
+                    setLoadPage(false)
+
+                if (favouriteArray.length === 0) {
                     setLoadPage(false)
                     setNoRecipe(true)
                 }
@@ -67,9 +66,9 @@ function FavouritePage() {
     return (
         <div id="favourites-container" className="mx-auto w-75 text-center">
              <h3 className="text-center">My Favourites</h3>
-             {loadPage && <Loading />}
-             {noRecipe && <p >No items in your Favourites </p>}
-             {myFavourites && 
+             {loadPage ? <Loading /> : null}
+             {noRecipe ? <p >No items in your Favourites </p> : null}
+             {myFavourites ? 
                  <div id="card-container" className="d-flex flex flex-wrap mx-auto justify-content-center">
                      {myFavourites.map(favourite => 
                      <div key={favourite.recipeID} id="card" className="mx-2 d-flex align-items justify-content-center">
@@ -77,7 +76,7 @@ function FavouritePage() {
                              <Link to={`/recipe/${favourite.recipeID}`} className="recipe-link" state={{from: 'Main'}}>
                              <Card.Img className="recipe-image card-image-top mx-auto d-block" src={favourite.image ? favourite.image : noImage}/>
                              <Card.Title className="pt-2" style={{height: "60px"}}>
-                                 <h5 className="recipe-title text-center">{favourite.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1, e.length)).join(" ")}</h5>
+                                 <h5 className="recipe-title text-center">{favourite.title.split(" ").map((e) => e.charAt(0).toUpperCase() + e.slice(1)).join(" ")}</h5>
                              </Card.Title>
                              </Link>
                              <Card.Text>
@@ -86,7 +85,7 @@ function FavouritePage() {
                          </Card>
                      </div>
                  )}
-                 </div>
+                 </div> : null
              }
          </div>
     )

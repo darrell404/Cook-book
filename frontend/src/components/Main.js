@@ -2,7 +2,7 @@ import '../css/addon.css'
 import setToFavourite from '../Assets/Set-Favourite.svg'
 import addedToFavourite from '../Assets/Favourite.svg'
 import { useState, useRef, forwardRef, useEffect, useContext } from 'react'
-import {useLocation, Link, useNavigate} from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Card, Pagination } from 'react-bootstrap'
 import Loading from './Loading'
 import { AppContext } from '../context/Context'
@@ -19,11 +19,10 @@ const filterObject = {
 }
 
 export function Main(props) {
-  const location = useLocation();
   const navigate = useNavigate();
   const [chosenFilter, setChosenFilter] = useState({"Cuisine": "All", "MealType": "All"})
   const [previousFilter, setPreviousFilter] = useState({"Cuisine": "All", "MealType": "All"})
-  const {recipe, favourite, food, loggedin, userdata, expiresession, loadingdata, itemsonpage, pagecount, activepagenumber} = useContext(AppContext)
+  const {recipe, favourite, food, loggedin, loadingdata, itemsonpage, pagecount, activepagenumber} = useContext(AppContext)
   const [searchRecipe, setSearchRecipe] = recipe
   const [favourites, setFavourites] = favourite
   const [showFood, setShowFood] = food
@@ -43,12 +42,24 @@ export function Main(props) {
   }
 
   const fetchFavouriteState = async (event) => {
-    if (event) event.preventDefault();
-    const getAllFavourites = await fetch('/api/favourites').then(res => res.json()).then(data => data.favourites)
-    setFavourites(getAllFavourites)
+    event.preventDefault();
+    if (searchRecipe !== '') {
+      const getAllFavourites = await fetch('/api/favourites').then(res => res.json()).then(data => data.favourites)
+      setFavourites(getAllFavourites)
+    }
   }
 
-  // Updates Favourite State and updates the DB
+  // Checks if user is logged in after adding recipe to Favourite
+
+  const updateFavourites = (foodId) => {
+    if(loggedIn === false) {
+      navigate('/account/login')
+      return
+    }
+    else updateFavouriteState(foodId)
+  }
+
+  // Updates Favourite State and updates the DB, if user is logged in
 
   const updateFavouriteState = (foodID) => {
     const options = {
@@ -107,35 +118,9 @@ export function Main(props) {
     } 
   }
 
-  const updateFavourites = (foodId) => {
-    if(loggedIn === false) {
-      navigate('/account/login')
-      return
-    }
-    else updateFavouriteState(foodId)
-  }
+   // Sorting ascending or descending
 
-  const fetchRecipesAndFavourites = (event) => {
-    event.preventDefault();
-    fetchFavouriteState(event)
-    submit();
-  }
-
-  const changeFilter = (event) => {
-    setChosenFilter(previousState => ({
-      ...previousState, [event.target.id] : event.target.value
-    }))
-  }
-
-  const updateFilter = () => {
-    if (JSON.stringify(previousFilter) === JSON.stringify(chosenFilter)) {
-      return
-    }
-    fetchRecipes()
-    setPreviousFilter(chosenFilter)
-  }
-
-  const sortRecipe = (order, data) => {
+   const sortRecipe = (order, data) => {
     if (order === "ascend") {
       const newData = data.results.sort((first, second) => {
         if (first.title < second.title) {
@@ -165,6 +150,32 @@ export function Main(props) {
    
   }
 
+  const fetchRecipesAndFavourites = (event) => {
+    event.preventDefault();
+    fetchFavouriteState(event)
+    submit();
+  }
+
+  //  Keeps track of the filter choice, if it has been changed
+
+  const changeFilter = (event) => {
+    setChosenFilter(previousState => ({
+      ...previousState, [event.target.id] : event.target.value
+    }))
+  }
+
+  // Helper to only fetch for new recipe when filter value has been changed
+  //  Avoids unnecessary API calls if update button has been pressed constantly
+
+  const updateFilter = () => {
+    if (JSON.stringify(previousFilter) === JSON.stringify(chosenFilter)) {
+      return
+    }
+    fetchRecipes()
+    setPreviousFilter(chosenFilter)
+  }
+
+  // Changes count number to update number of recipes on pae
   const changeCount = (event) => {
     let numberOfItems = event.target.value
       if(numberOfItems === "All") {
@@ -207,13 +218,13 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
   var fetchedFood = showFood.results
   return(
     <div className="mx-auto recipe-list-container justify-content-center">
-      {ref.current !== '' && <div className="w-75 m-auto pl-5"><h5 className="showresult">Showing results for {ref.current}...</h5></div>}
+      {ref.current !== '' ? <div className="w-75 m-auto pl-5"><h5 className="showresult">Showing results for {ref.current}...</h5></div> : null}
       <div className="mx-auto justify-content-center align-items-center w-75">
-        {ref.current !== '' &&
+        {ref.current !== '' ?
           <>
-          <Filter food={fetchedFood} changeFilter={props.changeFilter} updateFilter={props.updateFilter} changeSort={props.changeSort}/>
+          <Filter changeFilter={props.changeFilter} updateFilter={props.updateFilter} changeSort={props.changeSort}/>
           <ShowItems changeCount={props.changeCount}/>
-          </>}
+          </> : null}
         <div className="container justify-content-center">
           <div className="d-flex flex flex-wrap mx-auto justify-content-center">
             {loading ? <Loading />
@@ -222,12 +233,14 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
             fetchedFood.slice((itemsOnPage * (activePage - 1)), (itemsOnPage * activePage)).map(food => <RecipeBox key={food.id} foodInfo={food} updateFavourites={props.updateFavourites}/>)
             )}
           </div>
-          {fetchedFood && <Pages/>}
+          {fetchedFood ? <Pages/> : null}
         </div>
       </div>
     </div>
   )
 })
+
+// Component which creates the filter box
 
 function Filter(props) {
     let renderDataFilter = []
@@ -263,6 +276,8 @@ function Filter(props) {
   )
 } 
 
+// Component for choosing how many items to view on the page
+
 function ShowItems(props) {
   return (
     <div className="container d-flex mt-3 justify-content-end">
@@ -274,12 +289,14 @@ function ShowItems(props) {
   )
 }
 
+// Component for dynamically creating the number of pages
+
 function Pages(props) {
   const { pagecount, activepagenumber } = useContext(AppContext)
   const [pages, setPages] = pagecount
   const [activePage, setActivePage] = activepagenumber
   var pageArray = []
-  for (let pagenumber= 1; pagenumber <= pagecount; pagenumber++) {
+  for (let pagenumber= 1; pagenumber <= pages; pagenumber++) {
     pageArray.push(
       <Pagination.Item onClick={() => {setActivePage(pagenumber)}} key={pagenumber} active={pagenumber === activePage}>
         {pagenumber}
@@ -294,6 +311,8 @@ function Pages(props) {
     </div>
   )
 }
+
+// Recipe Cards render after search
 
 function RecipeBox(props) {
   const [favouriteIcon, setFavouriteIcon] = useState(false)
@@ -312,7 +331,7 @@ function RecipeBox(props) {
         <Link to={`/recipe/${props.foodInfo.id}`} className="recipe-link" state={{from: 'Main'}}>
           <Card.Img className="recipe-image card-image-top d-block" src={props.foodInfo.image}/>
           <Card.Title className="pt-2" style={{height: "60px"}}>
-            <h5 className="recipe-title text-center">{props.foodInfo.title.charAt(0).toUpperCase() + props.foodInfo.title.slice(1, props.foodInfo.title.length)}</h5>
+            <h5 className="recipe-title text-center">{props.foodInfo.title.charAt(0).toUpperCase() + props.foodInfo.title.slice(1)}</h5>
           </Card.Title>
         </Link>
         <Card.Text>

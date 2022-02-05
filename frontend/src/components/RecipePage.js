@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { ListGroup, Row, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Loading from './Loading';
 
-function RecipePage(props) {
+function RecipePage() {
     const [metric, setMetric] = useState("metric")
     const [recipeData, setRecipeData] = useState()
     const [noRecipe, setNoRecipe] = useState(false)

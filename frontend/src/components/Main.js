@@ -1,7 +1,7 @@
 import '../css/addon.css'
 import setToFavourite from '../Assets/Set-Favourite.svg'
 import addedToFavourite from '../Assets/Favourite.svg'
-import { useState, useRef, forwardRef, useEffect, useContext } from 'react'
+import { useState, forwardRef, useEffect, useContext } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Card, Pagination } from 'react-bootstrap'
 import Loading from './Loading'
@@ -32,8 +32,6 @@ export function Main(props) {
   const [pages, setPages] = pagecount
   const [activePage, setActivePage] = activepagenumber
 
-  var searchedRecipeRef = useRef('')
-
   const fetchRecipes = async() => {
     setLoading(true)
     const response = await fetchRecipesFromAPI(searchRecipe, chosenFilter.Cuisine, chosenFilter.MealType)
@@ -42,7 +40,7 @@ export function Main(props) {
   }
 
   const fetchFavouriteState = async (event) => {
-    event.preventDefault();
+    // event.preventDefault();
     if (searchRecipe !== '') {
       const getAllFavourites = await fetch('/api/favourites').then(res => res.json()).then(data => data.favourites)
       setFavourites(getAllFavourites)
@@ -87,20 +85,9 @@ export function Main(props) {
     }
   }
 
-  const submit = () => {
-    if (searchRecipe === '' | searchRecipe === undefined) { 
-        searchedRecipeRef.current = '';
-        setShowFood('')
-        return
-      }
-    setLoading(true)
-    fetchRecipes()
-    searchedRecipeRef.current = searchRecipe
-  }
-
-  const change = (event) => {  
-      setSearchRecipe(event.target.value)
-  }
+  // const change = (event) => {  
+  //     setSearchRecipe(event.target.value)
+  // }
 
   // function for sorting the data Ascending/Descending
 
@@ -152,8 +139,7 @@ export function Main(props) {
 
   const fetchRecipesAndFavourites = (event) => {
     event.preventDefault();
-    fetchFavouriteState(event)
-    submit();
+    setSearchRecipe(event.target.querySelector('input').value)
   }
 
   //  Keeps track of the filter choice, if it has been changed
@@ -194,22 +180,33 @@ export function Main(props) {
       }
   }, [showFood, itemsOnPage])
 
+  useEffect(() => {
+    fetchFavouriteState(searchRecipe)
+    if (searchRecipe === '' | searchRecipe === undefined) { 
+      setShowFood('')
+      return
+    }
+    setLoading(true)
+    fetchRecipes()
+  }, [searchRecipe])
+
   return (
     <div className="w-100 h-100">
       <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
         <div className="search-container d-flex">
             <form onSubmit={fetchRecipesAndFavourites} className="w-100 form-control d-flex flex-row justify-content-center border-0">
-            <input onChange={change} type="input" placeholder="Search for recipes here" className="border border-3 form-control w-50 rounded-0"></input>
+            <input type="input" placeholder="Search for recipes here" className="border border-3 form-control w-50 rounded-0"></input>
             <button type="submit" className="search btn-lg bg-warning"><i className="fa fa-search"></i></button>
             </form>
         </div>
-      <SearchRecipeContainer ref={searchedRecipeRef} updateFavourites={updateFavourites} updateFilter={updateFilter} changeFilter={changeFilter} changeCount={changeCount} changeSort={changeSort}/>
+      <SearchRecipeContainer updateFavourites={updateFavourites} updateFilter={updateFilter} changeFilter={changeFilter} changeCount={changeCount} changeSort={changeSort}/>
     </div>
   );
 }
 
 const SearchRecipeContainer = forwardRef((props, ref) => {
-  const {food, loadingdata, activepagenumber, itemsonpage } = useContext(AppContext)
+  const {food, loadingdata, activepagenumber, itemsonpage, recipe } = useContext(AppContext)
+  const [searchRecipe, setSearchRecipe] = recipe
   const [showFood, useShowFood] = food
   const [loading, setLoading] = loadingdata
   const [activePage, setActivePage] = activepagenumber
@@ -218,9 +215,9 @@ const SearchRecipeContainer = forwardRef((props, ref) => {
   var fetchedFood = showFood.results
   return(
     <div className="mx-auto recipe-list-container justify-content-center">
-      {ref.current !== '' ? <div className="w-75 m-auto pl-5"><h5 className="showresult">Showing results for {ref.current}...</h5></div> : null}
+      {searchRecipe !== '' ? <div className="w-75 m-auto pl-5"><h5 className="showresult">Showing results for {searchRecipe}...</h5></div> : null}
       <div className="mx-auto justify-content-center align-items-center w-75">
-        {ref.current !== '' ?
+        {searchRecipe !== '' ?
           <>
           <Filter changeFilter={props.changeFilter} updateFilter={props.updateFilter} changeSort={props.changeSort}/>
           <ShowItems changeCount={props.changeCount}/>

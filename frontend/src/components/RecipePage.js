@@ -64,10 +64,12 @@ function RecipePage() {
         <div>
             <div className="recipe-container pb-5">
                 <div className='container'>
-                    <button className="p-2 rounded" style={favouriteIcon ?{ backgroundColor: "#ffc107" } : {backgroundColor : "white"}} onClick={() => loggedIn ? UpdateFavouriteState(id, favourites, setFavourites) : navigate('/account/login')}>
-                        <img className="favourite-icon m-2" src={favouriteIcon ? addedToFavourite : setToFavourite} alt="Favourite" />
-                        {favouriteIcon ? "Remove from Favourites" : "Add to Favourites"}
-                    </button>
+                    <div className="button-container w-100 d-flex justify-content-md-end justify-content-center">
+                        <button className="px-2 rounded" style={favouriteIcon ?{ backgroundColor: "#ffc107" } : {backgroundColor : "white"}} onClick={() => loggedIn ? UpdateFavouriteState(id, favourites, setFavourites) : navigate('/account/login')}>
+                            <img className="favourite-icon m-2" src={favouriteIcon ? addedToFavourite : setToFavourite} alt="Favourite" />
+                            {favouriteIcon ? "Remove from Favourites" : "Add to Favourites"}
+                        </button>
+                    </div>
                     <h2 className="my-5 text-center"><b className="border-bottom border-warning border-3">{recipeData.title.toUpperCase()}</b></h2>
                     <p className="text-center"><b className="text-warning">Servings:</b> {recipeData.servings} <b className="text-warning">Cooking Time:</b> {recipeData.readyInMinutes} minutes</p>
                     <Row className="mb-5">

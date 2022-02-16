@@ -46,7 +46,7 @@ function RecipePage() {
     }, [])
 
     useEffect(() => {
-    if (favourites.includes(id)) {
+    if (favourites.includes(parseInt(id))) {
       setFavouriteIcon(true)
     }
     else setFavouriteIcon(false)
@@ -65,7 +65,7 @@ function RecipePage() {
             <div className="recipe-container pb-5">
                 <div className='container'>
                     <div className="button-container w-100 d-flex justify-content-md-end justify-content-center">
-                        <button className="px-2 rounded" style={favouriteIcon ?{ backgroundColor: "#ffc107" } : {backgroundColor : "white"}} onClick={() => loggedIn ? UpdateFavouriteState(id, favourites, setFavourites) : navigate('/account/login')}>
+                        <button className="px-2 rounded" style={favouriteIcon ?{ backgroundColor: "#ffc107" } : {backgroundColor : "white"}} onClick={() => loggedIn ? UpdateFavouriteState(parseInt(id), favourites, setFavourites) : navigate('/account/login')}>
                             <img className="favourite-icon m-2" src={favouriteIcon ? addedToFavourite : setToFavourite} alt="Favourite" />
                             {favouriteIcon ? "Remove from Favourites" : "Add to Favourites"}
                         </button>

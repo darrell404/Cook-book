@@ -13,8 +13,13 @@ const DataProvider = (props) => {
     const [itemsOnPage, setItemsOnPage] = useState(5)
     const [pages, setPages] = useState(1)
     const [activePage, setActivePage] = useState(1)
+    const [chosenFilter, setChosenFilter] = useState({"Cuisine": "All", "MealType": "All"})
+    const [previousFilter, setPreviousFilter] = useState({"Cuisine": "All", "MealType": "All"})
 
-    const valuesPassed = {recipe: [searchRecipe, setSearchRecipe], favourite: [favourites, setFavourites], food: [showFood, setShowFood], loggedin: [loggedIn, setLoggedIn], userdata: [userData, setUserData], expiresession: [ expiry, setExpiry ], loadingdata: [loading, setLoading], itemsonpage: [itemsOnPage, setItemsOnPage], pagecount: [pages, setPages], activepagenumber: [activePage, setActivePage]}
+    const valuesPassed = {recipe: [searchRecipe, setSearchRecipe], favourite: [favourites, setFavourites], 
+        food: [showFood, setShowFood], loggedin: [loggedIn, setLoggedIn], userdata: [userData, setUserData], expiresession: [ expiry, setExpiry ], 
+        loadingdata: [loading, setLoading], itemsonpage: [itemsOnPage, setItemsOnPage], pagecount: [pages, setPages], activepagenumber: [activePage, setActivePage],
+        newfilter: [chosenFilter, setChosenFilter], oldfilter: [previousFilter, setPreviousFilter]}
 
     return (
         <AppContext.Provider value={valuesPassed}>

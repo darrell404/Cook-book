@@ -1,13 +1,22 @@
 import '../css/addon.css'
-import { useParams } from 'react-router-dom'
-import { useEffect, useState } from 'react';
+import { useParams, useNavigate } from 'react-router-dom'
+import { useEffect, useState, useContext } from 'react';
 import { ListGroup, Row, Image, Tabs, Tab, ToggleButton, ToggleButtonGroup } from 'react-bootstrap';
 import Loading from './Loading';
+import { UpdateFavouriteState } from './utils/Utils'
+import { AppContext } from '../context/Context'
+import setToFavourite from '../Assets/Set-Favourite.svg'
+import addedToFavourite from '../Assets/Favourite.svg'
 
 function RecipePage() {
+    const navigate = useNavigate()
+    const [favouriteIcon, setFavouriteIcon] = useState(false)
     const [metric, setMetric] = useState("metric")
     const [recipeData, setRecipeData] = useState()
     const [noRecipe, setNoRecipe] = useState(false)
+    const { favourite, loggedin } = useContext(AppContext)
+    const [loggedIn, setLoggedIn] = loggedin
+    const [favourites, setFavourites] = favourite
     var { id } = useParams();
     const getRecipeData = async () => await fetch(`/api/recipes/info/${id}`).then(response => response.json()).then(data => setRecipeData(data))
 
@@ -28,6 +37,21 @@ function RecipePage() {
         }, 2000)
     }
 
+    useEffect(() => {
+        const fetchFavouriteState = async (event) => {
+              const getAllFavourites = await fetch('/api/favourites').then(res => res.json()).then(data => data.favourites)
+              setFavourites(getAllFavourites)
+        }
+        fetchFavouriteState()
+    }, [])
+
+    useEffect(() => {
+    if (favourites.includes(id)) {
+      setFavouriteIcon(true)
+    }
+    else setFavouriteIcon(false)
+  }, [favourites])
+
     function addSummary() {
         let recipeSummary = `${recipeData.summary.split('.').slice(0, 2)}.`;
         return {
@@ -40,6 +64,10 @@ function RecipePage() {
         <div>
             <div className="recipe-container pb-5">
                 <div className='container'>
+                    <button className="p-2 rounded" style={favouriteIcon ?{ backgroundColor: "#ffc107" } : {backgroundColor : "white"}} onClick={() => loggedIn ? UpdateFavouriteState(id, favourites, setFavourites) : navigate('/account/login')}>
+                        <img className="favourite-icon m-2" src={favouriteIcon ? addedToFavourite : setToFavourite} alt="Favourite" />
+                        {favouriteIcon ? "Remove from Favourites" : "Add to Favourites"}
+                    </button>
                     <h2 className="my-5 text-center"><b className="border-bottom border-warning border-3">{recipeData.title.toUpperCase()}</b></h2>
                     <p className="text-center"><b className="text-warning">Servings:</b> {recipeData.servings} <b className="text-warning">Cooking Time:</b> {recipeData.readyInMinutes} minutes</p>
                     <Row className="mb-5">
